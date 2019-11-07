@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://isimo.com/scenario/1.0"
+	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://isimo.com/scenario/1.0"
+	elementFormDefault="qualified"
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="1.0">
+	
+	<element name="scenario">
+		<complexType>
+			<sequence>
+				<element ref="tns:tag" minOccurs="0" maxOccurs="unbounded" />
+				<element ref="tns:attr" minOccurs="0" maxOccurs="unbounded" />
+				<element ref="tns:actions" minOccurs="1" maxOccurs="1" />
+			</sequence>
+			<attribute name="timeout" use="optional" />
+		</complexType>
+	</element>
+
+	<element name="actions" type="tns:containerType" />
+
+	<element name="attr" type="tns:attrType" />
+	<element name="tag" type="tns:tagType" />
+
+	<simpleType name="exprRegexp">
+		<restriction base="string">
+			<pattern value=".*\{.*\(.*\)\}.*"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="boolean">
+		<union memberTypes="boolean tns:exprRegexp"/>
+	</simpleType>
+	
+	<simpleType name="integer">
+		<union memberTypes="integer tns:exprRegexp"/>
+	</simpleType>
+
+	<simpleType name="positiveInteger">
+		<union memberTypes="positiveInteger tns:exprRegexp"/>
+	</simpleType>
+	
+	<complexType name="emptyType">
+	</complexType>
+
+	<complexType name="attrType">
+		<simpleContent>
+			<extension base="string">
+				<attribute name="name"  />
+				<attribute name="default"  />
+			</extension>
+		</simpleContent>
+	</complexType>	
+
+	<complexType name="tagType">
+		<simpleContent>
+			<extension base="string">
+				<attribute name="name"  />
+			</extension>
+		</simpleContent>
+	</complexType>
+
+	<complexType name="actionType">
+		<complexContent>
+			<extension base="tns:emptyType">
+				<attributeGroup ref="tns:standardAttributes" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<complexType name="cssType">
+		<complexContent>
+			<extension base="tns:emptyType">
+				<sequence>
+					<element name="expected"  minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+				<attribute name="property" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="byType">
+		<complexContent>
+			<extension base="tns:actionType">
+				<attribute name="model" use="optional" />
+				<attribute name="xpath" use="optional" />
+				<attribute name="id" use="optional" />
+				<attribute name="css" use="optional"/>
+			</extension>
+		</complexContent>
+	</complexType>
+
+
+	<complexType name="containerType">
+		<complexContent>
+			<extension base="tns:actionType">
+				<group ref="tns:elementGroup" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="elementIdentificationElemType">
+		<complexContent>
+			<extension base="tns:byType">
+				<attribute name="checkvisible" default="true" />
+				<attribute name="expression" use="optional" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="conditionElemType">
+		<complexContent>
+			<extension base="tns:elementIdentificationElemType">
+				<attribute name="negative" default="false" type="tns:boolean" use="optional"/>
+				<attribute name="positive" default="true" type="tns:boolean" use="optional"/>
+				<attribute name="visible" default="true" type="tns:boolean"/>
+				<attribute name="maxcounter" use="optional" type="tns:positiveInteger" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="conditionType">
+		<complexContent>
+			<extension base="tns:conditionElemType">
+				<group ref="tns:elementGroup" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="ifType">
+		<complexContent>
+			<extension base="tns:conditionElemType">
+				<sequence>
+					<element name="then" type="tns:containerType" minOccurs="1"
+						maxOccurs="1" />
+					<element name="else" type="tns:containerType" minOccurs="0"
+						maxOccurs="1" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<simpleType name="cornerType">
+		<restriction base="string">
+			<enumeration value="ul"/>
+			<enumeration value="ur"/>
+			<enumeration value="ll"/>
+			<enumeration value="lr"/>
+		</restriction>
+	</simpleType>
+
+	<complexType name="moveType">
+		<complexContent>
+			<extension base="tns:byType">
+				<attribute name="offsetx" type="tns:integer"/>
+				<attribute name="offsety" type="tns:integer"/>
+				<attribute name="x" type="tns:integer"/>
+				<attribute name="y" type="tns:integer"/>
+				<attribute name="click" type="tns:boolean"/>
+				<attribute name="corner" type="tns:cornerType"/>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="interactionsType">
+		<complexContent>
+			<extension base="tns:actionType">
+				<choice maxOccurs="unbounded" minOccurs="0">
+					<element name="move" type="tns:moveType" />
+					<element name="clickandhold" />
+					<element name="click" />
+					<element name="release" />
+				</choice>
+			</extension>
+		</complexContent>
+	</complexType>
+
+
+	<complexType name="whileType">
+		<complexContent>
+			<extension base="tns:conditionType">
+				<attribute name="maxiterations" use="optional" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="selectType">
+		<complexContent>
+			<extension base="tns:byType">
+				<attribute name="visibleText" use="optional" />
+				<attribute name="value" use="optional" />
+				<attribute name="index" use="optional" />
+				<attribute name="tab" use="optional" type="tns:boolean"/>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<simpleType name="inputtypes">
+		<restriction base="string">
+			<enumeration value="date" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="storetypes">
+		<restriction base="string">
+			<enumeration value="id" />
+			<enumeration value="xpath" />
+			<enumeration value="css" />
+			<enumeration value="model" />
+			<enumeration value="count" />
+			<enumeration value="text" />
+			<enumeration value="expression" />
+		</restriction>
+	</simpleType>
+
+	<complexType name="inputType">
+		<complexContent>
+			<extension base="tns:byType">
+				<attribute name="type" type="tns:inputtypes" />
+				<attribute name="value" use="optional" />
+				<attribute name="index" use="optional" />
+				<attribute name="transformer" use="optional" />
+				<attribute name="skipcheck" use="optional" type="tns:boolean"/>
+				<attribute name="clear" default="true" />
+				<attribute name="tab" default="false" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="includeType">
+		<complexContent>
+			<extension base="tns:actionType">
+				<attribute name="scenario" />
+				<anyAttribute processContents="lax" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="storeType">
+		<complexContent>
+			<extension base="tns:elementIdentificationElemType">
+				<attribute name="type" type="tns:storetypes" />
+				<attribute name="variable" />
+				<attribute name="attribute" use="optional" />
+				<attribute name="content" use="optional" />
+				<attribute name="text" use="optional" />
+				<attribute name="urlencode" default="false" type="tns:boolean"/>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="sleepType">
+		<complexContent>
+			<extension base="tns:actionType">
+				<attribute name="seconds" type="tns:positiveInteger" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="waitforType">
+		<complexContent>
+			<extension base="tns:byType">
+				<attribute name="negative" use="optional" />
+				<attribute name="checkvisible" use="optional" />
+				<attribute name="count" use="optional" />
+				<attribute name="title" use="optional" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="getType">
+		<complexContent>
+			<extension base="tns:actionType">
+				<attribute name="url" />
+				<attribute name="repeatcount" default="1" />
+				<attribute name="username" use="optional" />
+				<attribute name="password" use="optional" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="assertType">
+		<complexContent>
+			<extension base="tns:actionType">
+				<attribute name="xpath" use="optional" />
+				<attribute name="title" use="optional" />
+				<attribute name="visible" default="false" />
+				<attribute name="negative" default="false" />
+				<attribute name="positive" default="false" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="asserttextType">
+		<complexContent>
+			<extension base="tns:actionType">
+				<attribute name="pattern" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="commentType">
+		<simpleContent>
+			<extension base="string"></extension>
+		</simpleContent>
+	</complexType>
+
+	<complexType name="draganddropType">
+		<complexContent>
+			<extension base="tns:actionType">
+				<attribute name="source" />
+				<attribute name="target" />
+				<attribute name="until" use="optional" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="handlealertType">
+		<complexContent>
+			<extension base="tns:actionType">
+				<attribute name="ifpresent" use="optional" />
+				<attribute name="action"/>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="openType">
+		<complexContent>
+			<extension base="tns:actionType">
+				<attribute name="url"/>
+				<attribute name="deletedownloads" type="tns:boolean"/>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="windowsType">
+		<complexContent>
+			<extension base="tns:actionType">
+				<attribute name="waitforcount" use="optional" />
+				<attribute name="close" use="optional" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="clickType">
+		<complexContent>
+			<extension base="tns:byType">
+				<attribute name="until" use="optional" />
+				<attribute name="negative" use="optional" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="moveandclickType">
+		<complexContent>
+			<extension base="tns:byType">
+				<attribute name="offsetx" use="optional" />
+				<attribute name="offsety" use="optional" />
+				<attribute name="corner" use="optional" />
+				<attribute name="click" use="optional" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="scriptType">
+		<simpleContent>
+			<extension base="string">
+				<attributeGroup ref="tns:standardAttributes" />
+			</extension>
+		</simpleContent>
+	</complexType>
+
+	<complexType name="checkstyleType">
+		<complexContent>
+			<extension base="tns:actionType">
+				<sequence>
+					<element name="elements">
+						<complexType>
+							<sequence>
+								<element name="element" minOccurs="1" maxOccurs="unbounded"
+									type="tns:elementIdentificationElemType" />
+							</sequence>
+						</complexType>
+					</element>
+					<element name="css" maxOccurs="unbounded" minOccurs="1">
+						<complexType>
+							<sequence>
+								<element name="expected" minOccurs="0" maxOccurs="unbounded"
+									/>
+							</sequence>
+							<attribute name="property" />
+							<attribute name="expected">
+							<annotation>
+                    			<appinfo>
+                        			<jxb:property name="expectedAttribute"/>
+                    			</appinfo>
+                			</annotation>
+							</attribute>
+						</complexType>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="robotType">
+		<complexContent>
+			<extension base="tns:actionType">
+				<attribute name="texttotype" use="optional" />
+				<attribute name="sendenter" use="optional" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="sqlTypeNoContent">
+		<complexContent>
+			<extension base="tns:actionType">
+				<attribute name="jdbcdriver" />
+				<attribute name="jdbcurl" />
+				<attribute name="jdbcuser" />
+				<attribute name="jdbcpassword" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="sqlType">
+		<complexContent>
+			<extension base="tns:sqlTypeNoContent">
+				<sequence>
+					<element name="statement" minOccurs="1" maxOccurs="unbounded" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="maximizeType">
+		<complexContent>
+			<extension base="tns:actionType">
+				<attribute name="zoom" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="saveType">
+		<simpleContent>
+			<extension base="string">
+				<attribute name="file" />
+			</extension>
+		</simpleContent>
+	</complexType>
+
+	<complexType name="actionOtherTypeNoContent">
+		<complexContent>
+			<extension base="tns:actionType">
+				<attribute name="classname" />
+				<anyAttribute />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="actionOtherType">
+		<complexContent>
+			<extension base="tns:actionOtherTypeNoContent">
+				<sequence>
+					<any minOccurs="0" maxOccurs="unbounded" processContents="lax" />
+				</sequence>
+				<anyAttribute processContents="lax" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<group name="elementGroup">
+		<sequence>
+			<choice maxOccurs="unbounded" minOccurs="0">
+				<element name="click" type="tns:clickType" />
+				<element name="select" type="tns:selectType" />
+				<element name="input" type="tns:inputType" />
+				<element name="include" type="tns:includeType" />
+				<element name="store" type="tns:storeType" />
+				<element name="maximize" type="tns:maximizeType" />
+				<element name="closebrowser" type="tns:actionType" />
+				<element name="sleep" type="tns:sleepType" />
+				<element name="waitfor" type="tns:waitforType" />
+				<element name="get" type="tns:getType" />
+				<element name="assert" type="tns:assertType" />
+				<element name="asserttext" type="tns:asserttextType" />
+				<element name="commandline" type="tns:actionType" />
+				<element name="comment" type="tns:commentType" />
+				<element name="draganddrop" type="tns:draganddropType" />
+				<element name="handlealert" type="tns:handlealertType" />
+				<element name="open" type="tns:openType" />
+				<element name="windows" type="tns:windowsType" />
+				<element name="condition" type="tns:conditionType" />
+				<element name="if" type="tns:ifType" />
+				<element name="while" type="tns:whileType" />
+				<element name="moveandclick" type="tns:moveandclickType" />
+				<element name="checkstyle" type="tns:checkstyleType" />
+				<element name="robot" type="tns:robotType" />
+				<element name="sql" type="tns:sqlType" />
+				<element name="save" type="tns:saveType" />
+				<element name="action" type="tns:actionOtherType" />
+				<element name="generated" type="tns:emptyType" />
+				<element name="interactions" type="tns:interactionsType" />
+			</choice>
+		</sequence>
+	</group>
+
+	<attributeGroup name="standardAttributes">
+		<attribute name="issue" use="optional" />
+		<attribute name="ignoreerrors" use="optional" />
+		<attribute name="description" use="optional" />
+		<attribute name="timeout" use="optional" type="tns:positiveInteger"/>
+	</attributeGroup>
+</schema>

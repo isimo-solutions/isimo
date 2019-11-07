@@ -1,0 +1,32 @@
+<project name="${artifactId}" default="test">
+	<!-- To use one of the tasks in the project, this line needs to be added in build-->
+	<property file="local.properties"/>
+	<path id="project.classpath">		
+		<pathelement path="${mvn.test.classpath}"/>
+	</path>
+	<path id="runtime.classpath">		
+		<pathelement path="${mvn.runtime.classpath}"/>
+	</path>
+	<taskdef classpathref="project.classpath" resource="net/sf/antcontrib/antlib.xml" />
+	
+	<target name="test">
+		<property name="scenario" value="${testscenario}"/>
+		<property name="com.isimo.scenarios" value="${project.build.directory}/test-classes/${testcasesDir}"/>
+		<echo>mvn.test.classpath=${mvn.test.classpath}</echo>
+		<echo>scenario=${scenario}</echo>
+		<ant target="testScenario" dir="${project.build.directory}/testframework" inheritall="true"/>
+	</target>
+
+	<target name="moduletest">
+		<property name="com.isimo.scenarios" value="${project.build.directory}/test-classes/${testcasesDir}"/>
+		<fileset id="isimo.scenarios" dir="${com.isimo.scenarios}">
+			<include name="${module}/**/*.xml"/>
+		</fileset>
+		<property name="configdir" value="${basedir}/config"/>
+		<echo>mvn.test.classpath=${mvn.test.classpath}</echo>
+		<echo>project.build.directory=${project.build.directory}</echo>
+		<ant target="testManyScenarios" dir="${project.build.directory}/testframework" inheritall="true" inheritrefs="true"/>
+	</target>
+
+
+</project>

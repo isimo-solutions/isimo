@@ -1,0 +1,32 @@
+testframework Documentation
+===========================
+:Author: Andrzej Dmoch
+:Email: andrzej.dmoch@gmail.com
+:Module: testframework
+
+Introduction
+------------
+The module {module} has been created by {author}({email}). The goal of {module} is to provide a Web UI-Testing Framework which allows the creation of the complex 
+automated testscenarios with a limited technical knowledge. The scenarios are stored in the form of XML-Files, they can be parameterized and included in other scenarios.
+The scenarios consists of actions. The framework comes up with a number of predefined actions which should cover 95% of the needs of any testautomation project.  
+
+The {module} uses link:http://seleniumhq.org[Selenium] and tries to simplify the always cumbersome task of programming the Selenium testcases by allowing 
+to create the testscenarios with a limited technical knowledge.
+
+.By using {module} you'll have the following benefits:
+* reduction of the time needed to create testscenarios - as the scenarios don't have to be programmed and can be created by entering the XML commands in the dedicated
+interpreter window,
+* reduction of the costs of the human resources - the creation of the classical Selenium tests is always connected with hiring a full-time programmers; with the {module}
+this is no longer required. The only requirements are: XML basics, X-Path, CSS Selector knowledge,  knowledge of the {module}. Of course, the programming is sometimes
+also required in the advanced scenarios but the programmer's time can be reduced from 100% to 10-20%. 
+
+
+Getting Started
+---------------
+
+
+
+Predefined Actions
+------------------
+
+

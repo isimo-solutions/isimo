@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <groupId>${groupId}</groupId>
+  <artifactId>${artifactId}</artifactId>
+  <version>${version}</version>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+	<testframework.version>2.0-Sel-3.14.0-SNAPSHOT</testframework.version>
+  </properties>
+  
+  <dependencies>
+		<dependency>
+			<groupId>com.isimo</groupId>
+			<artifactId>isimo.core</artifactId>
+			<version>${testframework.version}</version>
+		</dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <profiles>
+  		<profile>
+			<id>testrun</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
+						<executions>
+							<execution>
+								<phase>test</phase>
+								<configuration>
+									<target>
+										<path id="p.classpath">
+											<pathelement path="${mvn.test.classpath}" />
+										</path>
+										<dependencyfilesets prefix="mavendeps."/>
+										<taskdef classpathref="p.classpath" resource="net/sf/antcontrib/antlib.xml" />
+										
+										<mkdir dir="${project.build.directory}/testframework" />
+										<unzip dest="${project.build.directory}/testframework">
+											<fileset refid="mavendeps.com.isimo:isimo.core:jar" />
+										</unzip>
+										<if>
+											<not><isset property="test.target"/></not>
+											<then><var name="test.target" value="moduletest"/></then>
+										</if>
+										<property name="mvn.test.classpath" refid="maven.test.classpath" />
+										<property name="mvn.runtime.classpath" refid="maven.runtime.classpath" />
+										
+										<echo>mvn.test.classpath=${mvn.test.classpath}</echo>
+										<echo>testframework.model.path=${testframework.model.path}</echo>
+										<echo>isimo.browser=${isimo.browser}</echo>
+										<echo>module=${module}</echo>
+										<echo>browser=${browser}</echo>
+										<ant antfile="build.xml" target="${test.target}"
+											inheritAll="true" />
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>ant-contrib</groupId>
+								<artifactId>ant-contrib</artifactId>
+								<version>1.0b3</version>
+								<exclusions>
+									<exclusion>
+										<artifactId>ant</artifactId>
+										<groupId>ant</groupId>
+									</exclusion>
+								</exclusions>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+  </profiles>
+</project>

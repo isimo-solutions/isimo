@@ -1,0 +1,7 @@
+<scenario xmlns="http://isimo.com/scenario/1.0" timeout="100000000">
+	<actions>
+		<open url="http://google.com"/>
+		<input css="input[name='q']" value="Hello World"/>
+		<click xpath="//input[@name='btnK']"/>
+	</actions>
+</scenario>
