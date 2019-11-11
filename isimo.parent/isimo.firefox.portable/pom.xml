@@ -9,6 +9,13 @@
 		<version>2.3-Sel-3.141.59-SNAPSHOT</version>
 	</parent>
   <artifactId>isimo.firefox.portable</artifactId>
+<dependencies>
+  <dependency>
+	<groupId>${project.groupId}</groupId>
+	<artifactId>isimo.gecko.driver</artifactId>
+	<version>${project.version}</version>
+  </dependency>
+  </dependencies>
   <profiles>
   		<profile>
 			<id>downloadfirefox</id>
@@ -57,24 +64,6 @@
 								</exclusions>
 							</dependency>
 						</dependencies>
-					</plugin>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>build-helper-maven-plugin</artifactId>
-						<version>3.0.0</version>
-						<executions>
-							<execution>
-								<phase>generate-resources</phase>
-								<goals>
-									<goal>add-resource</goal>
-								</goals>
-								<configuration>
-									<resources>
-										<resource><directory>${project.build.directory}/generated-sources/FirefoxPortable64</directory></resource>
-									</resources>
-								</configuration>
-							</execution>
-						</executions>
 					</plugin>
 				</plugins>
 			</build>

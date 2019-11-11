@@ -1,0 +1,276 @@
+<project name="actests" default="testScenario">
+
+	<!-- Properties can be imported from system environment!(Here test.properties) -->
+	<property environment="ENVIRONMENT"/>
+	<property name="parallel" value="false"/>
+
+	<!-- Read all the properties from a file -->
+	<property name="target.dir" value="${project.build.directory}"/>
+
+	<!-- classpath for required jar files; the classpath is set to the list of jar files and classes in the project. -->
+	<path id="project.classpath">
+		<pathelement path="${mvn.test.classpath}"/>
+	</path>
+
+	<!-- To use one of the tasks in the project, this line needs to be added in build-->
+	<taskdef classpathref="project.classpath" resource="net/sf/antcontrib/antlib.xml" />
+	<taskdef classpathref="project.classpath" name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask"/>
+	<taskdef classpathref="project.classpath" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" name="junit"/>
+
+	<macrodef name="genproperties">
+		<attribute name="input"/>
+		<attribute name="result"/>
+		<attribute name="mavenprops"/>
+		<sequential>
+			<echo>Dumping properties to file @{input}</echo>
+			<echoproperties destfile="@{mavenprops}"/>
+			<echoproperties destfile="@{input}"/>
+			<echo>user.dir=${user}</echo>
+			<if>
+				<not>
+					<isset property="isimo.waitforremotedebug.genprops"/>
+				</not>
+				<then>
+					<property name="isimo.waitforremotedebug.genprops" value="n"/>
+				</then>
+			</if>
+			<java classname="com.isimo.core.properties.PropertiesGenerator" classpathref="project.classpath" fork="true" dir="${target.dir}/tests">
+				<jvmarg line="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=${isimo.waitforremotedebug.genprops},address=25005"/>
+				<jvmarg value="-Dfile.encoding=UTF-8"/>
+				<jvmarg value="-Dtestdir=${target.dir}/tests"/>
+				<jvmarg value="-Dproject.build.directory=${target.dir}"/>
+				<jvmarg value="-Disimo.browser=${isimo.browser}"/>
+				<arg value="@{input}"/>
+				<arg value="@{result}"/>
+			</java>
+			<echo>Properties dumped</echo>
+		</sequential>
+	</macrodef>
+
+	<target name="init">
+		<property name="testdir" value="${project.build.directory}/tests"/>
+		<mkdir dir="${testdir}"/>
+	</target>
+
+
+	<target name="testScenario" depends="init">
+		<!-- Report the current properties to the log -->
+		<echo>mvn.test.classpath=${mvn.test.classpath}</echo>
+		<echo>scenario=${scenario}</echo>
+		<echo>com.isimo.scenarios=${com.isimo.scenarios}</echo>
+		<echo>isimo.model.path=${isimo.model.path}</echo>
+		<echo>configdir=${configdir}</echo>
+		<var unset="true" name="scenarioname"/>
+		<propertyregex input="${scenario}" property="scenarioname" override="true" regexp="\/" replace="_" global="true" defaultValue="${scenario}"/>
+		<echo>Starting scenario ${scenario}, report in the directory ${target.dir}/tests/${scenarioname}</echo>
+		<mkdir dir="${target.dir}/tests/${scenarioname}"/>
+		<genproperties input="${project.build.directory}/tests/input.properties" result="${target.dir}/tests/${scenarioname}/test.properties" mavenprops="${project.build.directory}/tests/maven.properties"/>
+		<!-- run new test in a separate VM -->
+		<!-- Can fork a separate process so that a System.exit() does not kill the Ant build -->
+		<!-- Runs tests from the JUnit testing framework -->
+		<if>
+			<equals arg1="${isimo.cleanup}" arg2="true"/>
+			<then>
+				<antcall target="testframework_cleanup"/>
+			</then>
+		</if>
+
+		<echo>isimo.nocommandline=${isimo.nocommandline}</echo>
+		<echo>isimo.commandlineonerror=${isimo.commandlineonerror}</echo>
+		<echo>isimo.model.path=${isimo.model.path}</echo>
+		<echo>isimo.browser=${isimo.browser}</echo>
+		<echo>isimo.waitforremotedebug=${isimo.waitforremotedebug}</echo>
+		<echo>isimo.actiontimeout=${isimo.actiontimeout}</echo>
+		<echo>browser=${browser}</echo>
+		<exec command="taskkill">
+			<arg line="/F /IM iexplore.exe /T" />
+		</exec>
+		<exec command="taskkill">
+			<arg line="/F /FI &quot;IMAGENAME eq IEDriverServer*&quot; /T" />
+		</exec>
+		<exec command="taskkill">
+			<arg line="/F /IM WerFault.exe /T" />
+		</exec>
+		<exec command="taskkill">
+			<arg line="/F /FI &quot;IMAGENAME eq geckodriver*&quot; /T" />
+		</exec>
+		<var name="timeout" value="360000000" />
+		<xmltask source="${com.isimo.scenarios}/${scenario}.xml">
+			<copy path="/*[name()='scenario']/@timeout" property="tout"/>
+		</xmltask>
+		<if>
+			<isset property="tout"/>
+			<then>
+				<var unset="true" name="timeout"/>
+				<var name="timeout" value="${tout}"/>
+			</then>
+		</if>
+		<echo>Timeout=${timeout}</echo>
+		<if>
+			<not>
+				<isset property="isimo.waitforremotedebug"/>
+			</not>
+			<then>
+				<property name="isimo.waitforremotedebug" value="n"/>
+			</then>
+		</if>
+		<junit fork="true" printsummary="true" showoutput="true" dir="${target.dir}/tests/${scenarioname}" timeout="${timeout}">
+			<jvmarg line="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=${isimo.waitforremotedebug},address=25005"/>
+			<jvmarg value="-Dscenario=${scenario}"/>
+			<jvmarg value="-Disimo.report.dir=${target.dir}/tests/${scenarioname}"/>
+			<jvmarg value="-Dfile.encoding=UTF-8"/>
+			<!--<jvmarg value="-Dcom.isimo.scenarios=${com.isimo.scenarios}"/>
+			<jvmarg value="-Disimo.waitforremotedebug=${isimo.waitforremotedebug}"/>
+			<jvmarg value="-Disimo.nocommandline=${isimo.nocommandline}"/>
+			<jvmarg value="-Disimo.commandlineonerror=${isimo.commandlineonerror}"/>
+			<jvmarg value="-Disimo.model.path=${isimo.model.path}"/>
+			<jvmarg value="-Disimo.browser=${isimo.browser}"/>-->
+			<classpath refid="project.classpath"/>
+			<test name="com.isimo.core.TestCases" haltonerror="false" haltonfailure="false" todir="${target.dir}/tests/${scenarioname}" outfile="${scenarioname}" methods="testScenario" fork="true">
+				<formatter type="xml" usefile="yes"/>
+				<formatter type="plain" usefile="yes"/>
+			</test>
+		</junit>
+		<if>
+			<available file="${target.dir}/tests/${scenarioname}/scenariolog.xml" />
+			<then>
+				<xslt in="${target.dir}/tests/${scenarioname}/scenariolog.xml" out="${target.dir}/tests/${scenarioname}/scenariolog.html" style="xsl/testcaselog.xsl" />
+			</then>
+			<else>
+				<echo>Die Datei ${target.dir}/tests/${scenarioname}/scenariolog.xml ist nicht verfügbar!!!</echo>
+			</else>
+		</if>
+		<echo>Executed scenario ${scenario}, report in the directory ${target.dir}/tests/${scenarioname}</echo>
+	</target>
+
+	<target name="testManyScenarios">
+		<!-- <antcall target="cleantasks"/> -->
+		<!-- <antcall target="testScenario">
+			<param name="scenario" value="01-ReklamationEinfach"/>
+		</antcall>
+		<antcall target="testScenario">
+			<param name="scenario" value="02-ReklamationLeistungEdit"/>
+		</antcall>
+		<antcall target="testScenario">
+			<param name="scenario" value="03-ReklamationLeistungenMassEdit"/>
+		</antcall>-->
+		<for param="file" parallel="${parallel}">
+			<sort>
+				<fileset refid="isimo.scenarios"/>
+			</sort>
+			<sequential>
+				<var unset="true" name="sc"/>
+				<var name="sc" value="@{file}"/>
+				<propertyregex input="${sc}" override="true" property="scslash" regexp="\\" replace="\/" global="true">
+				</propertyregex>
+				<propertyregex input="${com.isimo.scenarios}" override="true" property="scbase" regexp="\\" replace="\/" global="true">
+				</propertyregex>
+				<propertyregex input="${scslash}" override="true" property="scenarioname" regexp="^${scbase}\/(.*)\.xml$" replace="\1" global="true">
+				</propertyregex>
+				<echo>Executing scenario ${scenarioname}</echo>
+				<antcall target="testScenario">
+					<param name="scenario" value="${scenarioname}"/>
+				</antcall>
+			</sequential>
+		</for>
+	</target>
+
+	<!-- <target name="cleantasks">
+			<get src="http://${is.host}:${is.port}/invoke/com_dbnetz_ingrit_Process_Test.util:deleteAllTasks" dest="${target.dir}/deletealltasks.html" ignoreerrors="false"
+					username="${is.user}" password="${is.password}"/>
+	</target> -->
+
+
+	<target name="makesummary">
+		<echo file="${target.dir}/summary_concat.xml" message="&lt;summary&gt;"/>
+		<!-- output a message -->
+		<mkdir dir="${target.dir}/tests"/>
+		<property file="${target.dir}/tests/test.properties"/>
+		<for param="file">
+			<fileset dir="${target.dir}/tests">
+				<include name="**/*.xml"/>
+				<exclude name="**/scenariolog.xml"/>
+				<exclude name="**/actualIssues.xml"/>
+				<exclude name="**/visitedIssues.xml"/>
+				<exclude name="**/tags_include.xml"/>
+			</fileset>
+			<sequential>
+				<echo file="${target.dir}/summary_concat.xml" append="true" message="&lt;testcase&gt;"/>
+				<var unset="true" name="xmlreport"/>
+				<var unset="true" name="testdir"/>
+				<var unset="true" name="txtreportfile"/>
+				<var unset="true" name="sname"/>
+				<var unset="true" name="testdirname"/>
+				<var unset="true" name="testsdirname"/>
+				<loadfile property="xmlreport" srcfile="@{file}"/>
+				<propertyregex input="${xmlreport}" override="true" property="xmlreportnoheader" regexp="&lt;\?xml version=&quot;1\.0&quot; encoding=&quot;UTF-8&quot; \?&gt;" replace="">
+				</propertyregex>
+
+				<dirname file="@{file}" property="testdir"/>
+				<dirname file="${testdir}" property="testsdir"/>
+				<basename file="@{file}" property="sname" suffix=".xml"/>
+				<basename file="${testdir}" property="testdirname"/>
+				<basename file="${testsdir}" property="testsdirname"/>
+
+				<echo file="${target.dir}/summary_concat.xml" message="${xmlreportnoheader}" append="true"/>
+				<echo file="${target.dir}/summary_concat.xml" message="&lt;xmllog&gt;${testsdirname}/${testdirname}/scenariolog.xml&lt;/xmllog&gt;" append="true"/>
+				<echo file="${target.dir}/summary_concat.xml" message="&lt;htmllog&gt;${testsdirname}/${testdirname}/scenariolog.html&lt;/htmllog&gt;" append="true"/>
+				<echo file="${target.dir}/summary_concat.xml" message="&lt;detailreport&gt;${testsdirname}/${testdirname}/${sname}.xml&lt;/detailreport&gt;" append="true"/>
+				<if>
+					<isset property="teststart"/>
+					<then>
+						<echo file="${target.dir}/summary_concat.xml" message="&lt;teststart&gt;${teststart}&lt;/teststart&gt;" append="true"/>
+					</then>
+				</if>
+				<echo file="${target.dir}/summary_concat.xml" message="&lt;detailreporttxt&gt;${testsdirname}/${testdirname}/${sname}.txt&lt;/detailreporttxt&gt;" append="true"/>
+				<if>
+					<available file="${testdir}/errorScreenshot.png"/>
+					<then>
+						<echo file="${target.dir}/summary_concat.xml" message="&lt;errorscreenshot&gt;${testsdirname}/${testdirname}/errorScreenshot.png&lt;/errorscreenshot&gt;" append="true"/>
+					</then>
+				</if>
+				<if>
+					<available file="${testdir}/tags_include.xml"/>
+					<then>
+						<var name="tags.content" unset="true"/>
+						<loadfile property="tags.content" srcfile="${testdir}/tags_include.xml"/>
+						<echo file="${target.dir}/summary_concat.xml" message="${tags.content}" append="true"/>
+					</then>
+				</if>
+				<echo file="${target.dir}/summary_concat.xml" message="&lt;/testcase&gt;" append="true"/>
+			</sequential>
+		</for>
+
+		<if>
+			<available file="${target.dir}/tests/envproperties.propsxml"/>
+			<then>
+				<loadfile property="envproperties.content" srcfile="${target.dir}/tests/envproperties.propsxml"/>
+				<echo file="${target.dir}/summary_concat.xml" message="&lt;envproperties&gt;${envproperties.content}&lt;env.title&gt;${env.title}&lt;/env.title&gt;&lt;/envproperties&gt;" append="true"/>
+			</then>
+		</if>
+		<echo file="${target.dir}/summary_concat.xml" message="&lt;/summary&gt;" append="true"/>
+
+		<xslt in="${target.dir}/summary_concat.xml" out="${target.dir}/summary.xml" style="xsl/summarymetadata.xsl"/>
+		<replace file="${target.dir}/summary.xml">
+			<replacefilter>
+				<replacetoken>ERROR-START(</replacetoken>
+				<replacevalue>&#60;failure&#62;</replacevalue>
+			</replacefilter>
+			<replacefilter>
+				<replacetoken>)ERROR-END</replacetoken>
+				<replacevalue>&#60;/failure&#62;</replacevalue>
+			</replacefilter>
+			<replacefilter>
+				<replacetoken>ISSUE-NUMBER-START(</replacetoken>
+				<replacevalue>&#60;issue&#62;</replacevalue>
+			</replacefilter>
+			<replacefilter>
+				<replacetoken>)ISSUE-NUMBER-END</replacetoken>
+				<replacevalue>&#60;/issue&#62;</replacevalue>
+			</replacefilter>
+		</replace>
+		<xslt in="${target.dir}/summary.xml" out="${target.dir}/summary.html" style="xsl/summary.xsl" classpathref="project.classpath">
+			<param name="name" expression="${name}"/>
+		</xslt>
+	</target>
+</project>
