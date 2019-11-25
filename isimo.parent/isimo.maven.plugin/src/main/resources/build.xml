@@ -210,15 +210,6 @@
 				<formatter type="plain" usefile="yes"/>
 			</test>
 		</junit>
-		<if>
-			<available file="${project.build.directory}/tests/${scenarioname}/scenariolog.xml" />
-			<then>
-				<xslt in="${project.build.directory}/tests/${scenarioname}/scenariolog.xml" out="${project.build.directory}/tests/${scenarioname}/scenariolog.html" style="xsl/testcaselog.xsl" />
-			</then>
-			<else>
-				<echo>Die Datei ${project.build.directory}/tests/${scenarioname}/scenariolog.xml ist nicht verfügbar!!!</echo>
-			</else>
-		</if>
 		<echo>Executed scenario ${scenario}, report in the directory ${project.build.directory}/tests/${scenarioname}</echo>
 	</target>
 
@@ -249,6 +240,36 @@
 				<echo>Executing scenario ${scenarioname}</echo>
 				<var name="scenario" value="${scenarioname}"/>
 				<runtarget target="testScenario"/>
+			</sequential>
+		</for>
+	</target>
+	
+	<target name="postprocess">
+		<dependencyfilesets prefix="mavendeps."/>
+		<delete dir="${project.build.directory}/isimoresources"/>
+		<mkdir dir="${project.build.directory}/isimoresources"/>
+		<for param="dep"  delimiter="${path.separator}">
+			<fileset refid="mavendeps.maven.project.dependencies"/>
+			<sequential>
+				<unzip dest="${project.build.directory}" src="@{dep}" overwrite="true">
+					<patternset>
+						<include name="isimoresources/**"/>
+					</patternset>
+				</unzip>
+				<for param="buildxml">
+					<fileset dir="${project.build.directory}/isimoresources">
+						<include name="**/isimopostbuild.xml"/>
+					</fileset>
+					<sequential>
+						<echo>Calling antfile @{buildxml}</echo>
+						<ant antfile="@{buildxml}" inheritall="true" inheritrefs="true"/>
+					</sequential>
+				</for>
+				<delete>
+					<fileset dir="${project.build.directory}/isimoresources">
+						<include name="**/isimopostbuild.xml"/>
+					</fileset>
+				</delete>				
 			</sequential>
 		</for>
 	</target>
