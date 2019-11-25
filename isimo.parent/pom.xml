@@ -25,6 +25,7 @@
 		<module>isimo.firefox.portable</module>
 		<module>isimo.gecko.driver</module>
 		<module>isimo.ie.driver</module>
+ 		<module>isimo.maven.plugin</module>
 	</modules>
 	
   	<dependencies>
@@ -59,7 +60,7 @@
 		<dependency>
 			<groupId>org.apache.ant</groupId>
 			<artifactId>ant-junit</artifactId>
-			<version>1.8.2</version>
+			<version>1.9.4</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>junit</artifactId>
