@@ -126,12 +126,12 @@
 			<jvmarg value="-Disimo.model.path=${isimo.model.path}"/>
 			<jvmarg value="-Disimo.browser=${isimo.browser}"/>-->
 			<classpath refid="project.classpath"/>
-			<test name="com.isimo.core.TestCases" haltonerror="false" haltonfailure="false" todir="${target.dir}/tests/${scenarioname}" outfile="${scenarioname}" methods="testScenario" fork="true">
+			<test name="com.isimo.core.TestCases" haltonerror="false" haltonfailure="false" todir="${target.dir}/tests/${scenarioname}" outfile="${scenarioname}_junit" methods="testScenario" fork="true">
 				<formatter type="xml" usefile="yes"/>
 				<formatter type="plain" usefile="yes"/>
 			</test>
 		</junit>
-		<if>
+		<!--<if>
 			<available file="${target.dir}/tests/${scenarioname}/scenariolog.xml" />
 			<then>
 				<xslt in="${target.dir}/tests/${scenarioname}/scenariolog.xml" out="${target.dir}/tests/${scenarioname}/scenariolog.html" style="xsl/testcaselog.xsl" />
@@ -139,7 +139,7 @@
 			<else>
 				<echo>Die Datei ${target.dir}/tests/${scenarioname}/scenariolog.xml ist nicht verfügbar!!!</echo>
 			</else>
-		</if>
+		</if>-->
 		<echo>Executed scenario ${scenario}, report in the directory ${target.dir}/tests/${scenarioname}</echo>
 	</target>
 
