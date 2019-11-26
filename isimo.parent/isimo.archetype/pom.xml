@@ -9,10 +9,4 @@
   <groupId>com.isimo</groupId>
   <artifactId>isimo.archetype</artifactId>
   <name>isimo.archetype</name>
-  <distributionManagement>
-  <snapshotRepository>
-			<id>smartweb-snapshots</id>
-			<url>http://smartweb.nazwa.pl:8080/repository/snapshots/</url>
-   </snapshotRepository>
-  </distributionManagement>
 </project>
