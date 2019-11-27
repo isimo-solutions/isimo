@@ -31,8 +31,13 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 
 /**
  * Ant task which create a fileset for each dependency in a Maven project, and a
@@ -53,6 +58,11 @@ public class IsimoDependencyFilesetsTask
      * The default project dependencies id.
      */
     public static final String DEFAULT_PROJECT_DEPENDENCIES_PROPERTY = "maven.project.dependencies.property";
+    
+    /**
+     * The default project dependencies id.
+     */
+    public static final String DEFAULT_ISIMO_DEPENDENCIES_PROPERTY = "isimo.project.dependencies.property";
 
     /**
      * The project ref Id of the project being used.
@@ -68,6 +78,11 @@ public class IsimoDependencyFilesetsTask
      * The id to store the dependencies fileset.
      */
     private String projectDependenciesPropertyId =DEFAULT_PROJECT_DEPENDENCIES_PROPERTY;
+    
+    /**
+     * The id to store the dependencies fileset.
+     */
+    private String isimoDependenciesPropertyId =DEFAULT_ISIMO_DEPENDENCIES_PROPERTY;
 
     /**
      * @return {@link #projectDependenciesId}
@@ -135,6 +150,7 @@ public class IsimoDependencyFilesetsTask
             dependenciesFileSet.createExclude().setName( "**" );
         }
         String dependencyListPropertyValue = "";
+        String isimoListPropertyValue = "";
         for ( Artifact artifact : depArtifacts )
         {
             String relativeArtifactPath = localRepository.pathOf( artifact );
@@ -146,12 +162,34 @@ public class IsimoDependencyFilesetsTask
             singleArtifactFileSet.setProject( getProject() );
             singleArtifactFileSet.setFile( artifact.getFile() );
             dependencyListPropertyValue += fileSetName+",";
+            if(isIsimoDependency(artifact.getFile())) {
+            	isimoListPropertyValue += artifact.getFile().getAbsolutePath()+",";
+            }
             getProject().addReference( fileSetName, singleArtifactFileSet );
         }
         if(dependencyListPropertyValue.endsWith(","))
         	dependencyListPropertyValue = dependencyListPropertyValue.substring(0, dependencyListPropertyValue.length()-1);
         getProject().addReference( ( getPrefix() + projectDependenciesId ), dependenciesFileSet );
         getProject().setProperty(( getPrefix() + projectDependenciesPropertyId ), dependencyListPropertyValue);
+        getProject().setProperty(( getPrefix() + isimoDependenciesPropertyId ), isimoListPropertyValue);
+    }
+    
+    boolean isIsimoDependency(File dep) {
+    	try  {
+    		ZipFile file = new ZipFile(dep);
+    		ZipEntry entry = null;
+    		Enumeration<? extends ZipEntry> entries = file.entries();
+    		while(entries.hasMoreElements()) {
+    			entry = entries.nextElement();
+    			if(entry.isDirectory() && "isimoresources/".equals(entry.getName()))
+    				return true;
+    		}
+    		return false;
+    	} catch(ZipException e) {
+    		return false;
+    	} catch(IOException e) {
+    		return false;
+    	}
     }
 
     /**

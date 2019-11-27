@@ -27,15 +27,14 @@
 
 	
 	<target name="preparation">
+		<echo>phase:postprocess</echo>
 		<path id="p.classpath">
 			<pathelement path="mvn.test.classpath" />
 		</path>
-		<dependencyfilesets prefix="mavendeps."/>
+		<isimodependencyfilesets prefix="mavendeps."/>
 		<taskdef classpathref="p.classpath" resource="net/sf/antcontrib/antlib.xml" />
-		<pathconvert refid="mavendeps.maven.project.dependencies" property="mavendeps"/>
-		<echoproperties destfile="echoproperties.txt"/>
 		<echo>mvn.test.classpath=${mvn.test.classpath}</echo>
-		<for param="dep" list="${mavendeps}" delimiter="${path.separator}">
+		<for param="dep" list="${mavendeps.isimo.project.dependencies.property}" delimiter=",">
 			<sequential>
 			    <echo>dep=@{dep}</echo>
 				<unzip dest="${project.build.directory}" src="@{dep}" overwrite="true">
@@ -75,6 +74,7 @@
 	</target>
 
 	<target name="moduletest" >
+		<echo>phase:modultest</echo>
 		<property name="com.isimo.scenarios" value="${project.build.directory}/test-classes"/>
 		<fileset id="isimo.scenarios" dir="${com.isimo.scenarios}">
 			<include name="${module}/**/*.xml"/>
@@ -245,11 +245,12 @@
 	</target>
 	
 	<target name="postprocess">
-		<dependencyfilesets prefix="mavendeps."/>
+		<isimodependencyfilesets prefix="mavendeps."/>
 		<delete dir="${project.build.directory}/isimoresources"/>
 		<mkdir dir="${project.build.directory}/isimoresources"/>
-		<for param="dep"  delimiter="${path.separator}">
-			<fileset refid="mavendeps.maven.project.dependencies"/>
+		<echo>phase:postprocess</echo>
+		<echo>Deps=${mavendeps.isimo.project.dependencies.property}</echo>
+		<for param="dep"  delimiter="," list="${mavendeps.isimo.project.dependencies.property}">
 			<sequential>
 				<unzip dest="${project.build.directory}" src="@{dep}" overwrite="true">
 					<patternset>
