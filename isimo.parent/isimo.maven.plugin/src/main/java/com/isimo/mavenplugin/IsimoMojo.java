@@ -63,12 +63,12 @@ public class IsimoMojo extends AbstractMojo {
    /**
     * The path to The XML file containing the definition of the Maven tasks.
     */
-   public static final String ANTLIB = "org/apache/maven/ant/tasks/antlib.xml";
+   public static final String ANTLIB = "com/isimo/mavenplugin/ant/antlib.xml";
 
    /**
     * The URI which defines the built in Ant tasks
     */
-   public static final String TASK_URI = "antlib:org.apache.maven.ant.tasks";
+   public static final String TASK_URI = "antlib:com.isimo.mavenplugin.ant.tasks";
 
    /**
     * String to prepend to project and dependency property names.
