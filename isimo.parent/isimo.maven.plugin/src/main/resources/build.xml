@@ -205,7 +205,7 @@
 			<jvmarg value="-Disimo.model.path=${isimo.model.path}"/>
 			<jvmarg value="-Disimo.browser=${isimo.browser}"/>-->
 			<classpath refid="project.classpath"/>
-			<test name="com.isimo.core.TestCases" haltonerror="false" haltonfailure="false" todir="${project.build.directory}/tests/${scenarioname}" outfile="${scenarioname}" methods="testScenario" fork="true">
+			<test name="com.isimo.core.TestCases" haltonerror="false" haltonfailure="false" todir="${project.build.directory}/tests/${scenarioname}" outfile="${scenarioname}_junit" methods="testScenario" fork="true">
 				<formatter type="xml" usefile="yes"/>
 				<formatter type="plain" usefile="yes"/>
 			</test>
