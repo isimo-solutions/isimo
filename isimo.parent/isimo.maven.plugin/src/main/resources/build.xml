@@ -27,7 +27,7 @@
 
 	
 	<target name="preparation">
-		<echo>phase:postprocess</echo>
+		<echo>phase:preparation</echo>
 		<path id="p.classpath">
 			<pathelement path="mvn.test.classpath" />
 		</path>
@@ -74,7 +74,7 @@
 	</target>
 
 	<target name="moduletest" >
-		<echo>phase:modultest</echo>
+		<echo>phase:moduletest</echo>
 		<property name="com.isimo.scenarios" value="${project.build.directory}/test-classes"/>
 		<fileset id="isimo.scenarios" dir="${com.isimo.scenarios}">
 			<include name="${module}/**/*.xml"/>
@@ -194,7 +194,7 @@
 			</then>
 		</if>
 		<if>
-			<equals arg1="${isimo.skip.junit}" arg2="true"/>
+			<not><equals arg1="${isimo.skip.junit}" arg2="true"/></not>
 			<then>
 				<junit fork="true" printsummary="true" showoutput="true" dir="${project.build.directory}/tests/${scenarioname}" timeout="${timeout}">
 					<jvmarg line="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=${isimo.waitforremotedebug},address=25005"/>
@@ -250,13 +250,16 @@
 	</target>
 	
 	<target name="postprocess">
-		<isimodependencyfilesets prefix="mavendeps."/>
-		<delete dir="${project.build.directory}/isimoresources"/>
-		<mkdir dir="${project.build.directory}/isimoresources"/>
 		<echo>phase:postprocess</echo>
+		<isimodependencyfilesets prefix="mavendeps."/>
 		<echo>Deps=${mavendeps.isimo.project.dependencies.property}</echo>
 		<for param="dep"  delimiter="," list="${mavendeps.isimo.project.dependencies.property}">
 			<sequential>
+				<delete>
+					<fileset dir="${project.build.directory}/isimoresources">
+						<include name="**/isimopostbuild.xml"/>
+					</fileset>
+				</delete>
 				<unzip dest="${project.build.directory}" src="@{dep}" overwrite="true">
 					<patternset>
 						<include name="isimoresources/**"/>
@@ -271,11 +274,6 @@
 						<ant antfile="@{buildxml}" inheritall="true" inheritrefs="true"/>
 					</sequential>
 				</for>
-				<delete>
-					<fileset dir="${project.build.directory}/isimoresources">
-						<include name="**/isimopostbuild.xml"/>
-					</fileset>
-				</delete>				
 			</sequential>
 		</for>
 	</target>

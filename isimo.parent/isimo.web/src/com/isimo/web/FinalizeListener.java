@@ -12,6 +12,7 @@ public class FinalizeListener implements ExecutionListener<Event> {
 	public void handleEvent(Event event) {
 		if(event.getEventType() == EventType.StopTestCase) {
 			System.out.println("Quitting web driver!");
+			WebDriverProvider.getInstance().getWebDriver().close();
 			WebDriverProvider.getInstance().getWebDriver().quit();
 		}
 	}
