@@ -37,7 +37,8 @@
 		<for param="dep" list="${mavendeps.isimo.project.dependencies.property}" delimiter=",">
 			<sequential>
 			    <echo>dep=@{dep}</echo>
-				<unzip dest="${project.build.directory}" src="@{dep}" overwrite="true">
+			    <echo>overwrite=${isimo.resources.overwrite}</echo>
+				<unzip dest="${project.build.directory}" src="@{dep}" overwrite="${isimo.resources.overwrite}">
 					<patternset>
 						<include name="isimoresources/**"/>
 					</patternset>
@@ -260,7 +261,7 @@
 						<include name="**/isimopostbuild.xml"/>
 					</fileset>
 				</delete>
-				<unzip dest="${project.build.directory}" src="@{dep}" overwrite="true">
+				<unzip dest="${project.build.directory}" src="@{dep}"  overwrite="${isimo.resources.overwrite}">
 					<patternset>
 						<include name="isimoresources/**"/>
 					</patternset>
