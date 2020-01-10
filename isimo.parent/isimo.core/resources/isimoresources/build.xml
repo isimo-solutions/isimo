@@ -114,7 +114,7 @@
 				<property name="isimo.waitforremotedebug" value="n"/>
 			</then>
 		</if>
-		<junit fork="true" printsummary="true" showoutput="true" dir="${target.dir}/tests/${scenarioname}" timeout="${timeout}">
+		<junit fork="true" printsummary="true" showoutput="true" dir="${target.dir}/tests/${scenarioname}" timeout="${timeout}" >
 			<jvmarg line="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=${isimo.waitforremotedebug},address=25005"/>
 			<jvmarg value="-Dscenario=${scenario}"/>
 			<jvmarg value="-Disimo.report.dir=${target.dir}/tests/${scenarioname}"/>

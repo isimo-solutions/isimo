@@ -76,7 +76,7 @@ import com.isimo.core.xml.LocatorAwareDocumentFactory;
 import junit.framework.TestCase;
 
 @SpringBootTest
-@RunWith(value = Parameterized.class)
+//@RunWith(value = Parameterized.class)
 public class TestCases {
 	@ClassRule
 	public static final SpringClassRule scr = new SpringClassRule();
@@ -110,9 +110,9 @@ public class TestCases {
 	
 	
 
-	public TestCases(String name) throws Exception {
+	public TestCases() throws Exception {
 		System.out.println("Starting test...");
-		this.scenarioName = name;
+		this.scenarioName = System.getProperty("scenario");
 	}
 	
 
