@@ -14,7 +14,7 @@ To run and use Isimo Solutions you will first need to install and setup:
 -   Maven
 
 ## Getting Started
-See the [Isimo.Solutions Website](https://isimo.solutions/getting-started) for detailed instructions.
+See the [Isimo.Solutions Website](https://isimo.solutions/getting-started) for more detailed instructions.
 
 ### First project
 ```
@@ -25,6 +25,7 @@ mvn -B archetype:generate -DarchetypeGroupId=com.isimo
 -DtestcasesDir=<...>
 ```
 Where instead of <…> you need to provide data for new project
+
 Variable description:
 -   groupId – group name in which project will belong
 -   artifactId – name of created project
