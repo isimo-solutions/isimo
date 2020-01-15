@@ -4,4 +4,5 @@ Isimo is a set of technologies and solutions aimed at automation of interactions
 - Interaction-based test automation (including browser automation based on Selenium)
 - Robotic Process Automations
 - Automation of browser interactions
+
 The word isimo originates from the Zulu language and simply means scenario.
