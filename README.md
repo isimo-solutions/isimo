@@ -7,6 +7,8 @@ Isimo is a set of technologies and solutions aimed at automation of interactions
 
 The word isimo originates from the Zulu language and simply means scenario.
 
+See more at [Isimo.Solutions Website](https://isimo.solutions)
+
 ## Preconditions
 To run and use Isimo Solutions you will first need to install and setup:
 
