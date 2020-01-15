@@ -16,7 +16,7 @@ To run and use Isimo Solutions you will first need to install and setup:
 -   Maven
 
 ## Getting Started
-See the [Isimo.Solutions Website](https://isimo.solutions/getting-started) for more detailed instructions.
+See the [Isimo.Solutions Getting Started page](https://isimo.solutions/getting-started) for more detailed instructions.
 
 ### First project
 ```
