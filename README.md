@@ -22,7 +22,7 @@ See the [Isimo.Solutions Getting Started page](https://isimo.solutions/getting-s
 ```
 mvn -B archetype:generate -DarchetypeGroupId=com.isimo   
 -DarchetypeArtifactId=isimo.archetype   
--DarchetypeVersion=2.0-SNAPSHOT DgroupId=<...>   
+-DarchetypeVersion=2.3-Sel-3.141.59-SNAPSHOT DgroupId=<...>   
 -DartifactId=<...> -Dversion= <...>  
 -DtestcasesDir=<...>
 ```
