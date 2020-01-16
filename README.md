@@ -13,7 +13,7 @@ See more at [Isimo.Solutions Website](https://isimo.solutions)
 To run and use Isimo Solutions you will first need to install and setup:
 
 -   Java SE Development Kit 8
--   Maven
+-   Maven 	3.6.0 (or higher)
 
 ## Getting Started
 See the [Isimo.Solutions Getting Started page](https://isimo.solutions/getting-started) for more detailed instructions.
