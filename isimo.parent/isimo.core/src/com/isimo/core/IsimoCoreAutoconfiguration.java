@@ -21,16 +21,12 @@ import com.isimo.core.event.ExecutionListener;
 public class IsimoCoreAutoconfiguration {
 	@Autowired
 	TestExecutionManager testExecutionManager;
-	
-	
-	@Qualifier("executionController")
-	@Autowired
-	IExecutionController executionController;
 
 	@Qualifier("defaultExecutionController")
 	@Autowired
 	DefaultExecutionController defaultExecutionController;
 	
+	@Bean
 	@ConditionalOnMissingBean(name = "executionController")
 	IExecutionController executionController() {
 		return defaultExecutionController;

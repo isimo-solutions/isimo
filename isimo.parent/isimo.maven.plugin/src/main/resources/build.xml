@@ -67,7 +67,7 @@
 	</target>
 	
 	<target name="test">
-		<property name="scenario" value="${testscenario}"/>
+		<property name="scenario" value="${module}/${testscenario}"/>
 		<property name="com.isimo.scenarios" value="${project.build.directory}/test-classes"/>
 		<echo>mvn.test.classpath=${mvn.test.classpath}</echo>
 		<echo>scenario=${scenario}</echo>

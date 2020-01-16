@@ -13,6 +13,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 	<testframework.version>2.3-Sel-3.141.59-SNAPSHOT</testframework.version>
+	<module>${testcasesDir}</module>
 	<isimo.execution.phases>preparation,moduletest</isimo.execution.phases>
   </properties>
   
@@ -30,6 +31,11 @@
 		<dependency>
 			<groupId>com.isimo</groupId>
 			<artifactId>isimo.firefox.portable</artifactId>
+			<version>${testframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.isimo</groupId>
+			<artifactId>isimo.ie.driver</artifactId>
 			<version>${testframework.version}</version>
 		</dependency>
 	</dependencies>

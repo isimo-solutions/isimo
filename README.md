@@ -37,10 +37,7 @@ Variable description:
 ### Launching first testcase
 In the main project folder:
 ```
-mvn -e -Disimo.closebrowseronerror=false -Denv=default   
--Dscenario=helloworld -Disimo.nocommandline=false   
--Disimo.commandlineonerror=true -Dtest.target=test   
--Disimo.browser=internetExplorer -Disimo.report=false -Dtout=100000000 test
+mvn -e -Disimo.closebrowseronerror=false -Denv=default -Dtestscenario=helloworld -Disimo.nocommandline=false -Disimo.commandlineonerror=true -Dtest.target=test -Disimo.execution.phases=preparation,test -Disimo.browser=internetExplorer -Disimo.report=false -Dtout=100000000 test
 ```
 
 ### Creating new testcases
