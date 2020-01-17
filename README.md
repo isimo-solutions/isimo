@@ -18,17 +18,29 @@ To run and use Isimo Solutions you will first need to install and setup:
 ## Getting Started
 See the [Isimo.Solutions Getting Started page](https://isimo.solutions/getting-started) for more detailed instructions.
 
+### Version select
+
+#### Newest release
+Copy settings.xml from main git folder to .m2 folder in user files on your computer.
+
+#### Snapshot from git
+Navigate to isimo.parent folder and use command:
+```
+mvn clean install
+```
+
 ### First project
 ```
 mvn -B archetype:generate -DarchetypeGroupId=com.isimo   
 -DarchetypeArtifactId=isimo.archetype   
--DarchetypeVersion=2.3-Sel-3.141.59-SNAPSHOT DgroupId=<...>   
+-DarchetypeVersion=2.3-Sel-3.141.59-SNAPSHOT -DgroupId=<...>   
 -DartifactId=<...> -Dversion= <...>  
 -DtestcasesDir=<...>
 ```
 Where instead of <…> you need to provide data for new project
 
 Variable description:
+- 	DarchetypeVersion - wersion of the framework you are using
 -   groupId – group name in which project will belong
 -   artifactId – name of created project
 -   version – version number of created project
