@@ -9,6 +9,9 @@
     <requiredProperty key="testcasesDir">
       <defaultValue>BasicTest</defaultValue>
     </requiredProperty>
+	<requiredProperty key="projectVersion">
+            <defaultValue>${project.version}</defaultValue>
+	 </requiredProperty>
   </requiredProperties>
 	<fileSets>
 		<fileSet filtered="true" encoding="UTF-8">

@@ -9,4 +9,24 @@
   <groupId>com.isimo</groupId>
   <artifactId>isimo.archetype</artifactId>
   <name>isimo.archetype</name>
+  
+  <build>
+  <resources>
+	<resource>
+		<directory>src/main/resources</directory>
+		<filtering>true</filtering>
+		<includes>
+			<include>META-INF/maven/archetype-metadata.xml</include>
+		</includes>
+	</resource>
+	<resource>
+		<directory>src/main/resources</directory>
+		<filtering>false</filtering>
+		<excludes>
+			<exclude>META-INF/maven/archetype-metadata.xml</exclude>
+		</excludes>
+	</resource>
+	</resources>
+  </build>
+  
 </project>
