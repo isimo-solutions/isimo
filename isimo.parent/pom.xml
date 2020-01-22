@@ -160,7 +160,7 @@
 				 <executions>
                      <execution>
                          <id>execute-prepare</id>
-                         <!-- Set up your Ant stuff here -->
+							<echo>test ant!</echo>
                          <goals>
                               <goal>prepare</goal>
                          </goals>
