@@ -177,8 +177,8 @@
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<tagNameFormat>@{project.version}</tagNameFormat>
-					<releaseVersion>release</releaseVersion>
-					<developmentVersion>dev</developmentVersion>
+					<releaseVersion>1.1.release</releaseVersion>
+					<developmentVersion>1.1.dev</developmentVersion>
 				</configuration>
 			</plugin>
 
