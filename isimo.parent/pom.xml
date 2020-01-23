@@ -193,16 +193,16 @@
 								<goals>
 									<goal>prepare</goal>
 								</goals>
+								<configuration>
+									<arguments>-B -DdryRun=true</arguments>
+									<autoVersionSubmodules>true</autoVersionSubmodules>
+									<allowTimestampedSnapshots>true</allowTimestampedSnapshots>
+									<tagNameFormat>@{project.version}</tagNameFormat>
+									<releaseVersion>1.1.RELEASE</releaseVersion>
+									<developmentVersion>1.1.SNAPSHOT</developmentVersion>
+								</configuration>
 							</execution>
 						</executions>
-						<configuration>
-							<arguments>-B -DdryRun=true</arguments>
-							<autoVersionSubmodules>true</autoVersionSubmodules>
-							<allowTimestampedSnapshots>true</allowTimestampedSnapshots>
-							<tagNameFormat>@{project.version}</tagNameFormat>
-							<releaseVersion>1.1.RELEASE</releaseVersion>
-							<developmentVersion>1.1.SNAPSHOT</developmentVersion>
-						</configuration>
 					</plugin>
 				</plugins>
 			</build>
