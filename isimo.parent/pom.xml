@@ -155,9 +155,10 @@
 			</plugin>
 		</plugins>
   	</build>
-  	<profiles>
-		<profile>
+		<profiles>
+			<profile>
 			<id>ant-release</id>
+			<modules></modules>
 			<build>
 				<plugins>
 					<plugin>
@@ -195,7 +196,7 @@
 							</execution>
 						</executions>
 						<configuration>
-							<arguments>-B</arguments>
+							<arguments>-B -DdryRun=true</arguments>
 							<autoVersionSubmodules>true</autoVersionSubmodules>
 							<allowTimestampedSnapshots>true</allowTimestampedSnapshots>
 							<tagNameFormat>@{project.version}</tagNameFormat>
@@ -206,7 +207,6 @@
 				</plugins>
 			</build>
 		</profile>
- 
 		<profile>
 			<id>smartweb</id>
 			<activation>
