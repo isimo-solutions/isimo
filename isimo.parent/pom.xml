@@ -163,6 +163,11 @@
 						<goals>
 							<goal>prepare</goal>
 						</goals>
+						<configuration>
+                             <arguments>-Pant-run-release</arguments>
+                             <releaseProfiles>ant-run-release</releaseProfiles>
+                             <mavenExecutorId>forked-path</mavenExecutorId>
+                         </configuration>
 					</execution>
 				</executions>
 				<configuration>
