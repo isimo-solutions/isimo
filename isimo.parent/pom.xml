@@ -192,14 +192,10 @@
 								<goals>
 									<goal>prepare</goal>
 								</goals>
-								<configuration>
-									 <arguments>-Pant-run-release</arguments>
-									 <releaseProfiles>ant-run-release</releaseProfiles>
-									 <mavenExecutorId>forked-path</mavenExecutorId>
-								 </configuration>
 							</execution>
 						</executions>
 						<configuration>
+							<arguments>-B</arguments>
 							<autoVersionSubmodules>true</autoVersionSubmodules>
 							<allowTimestampedSnapshots>true</allowTimestampedSnapshots>
 							<tagNameFormat>@{project.version}</tagNameFormat>
