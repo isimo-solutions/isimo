@@ -159,7 +159,8 @@
 				<version>3.0.0-M1</version>
 				<executions>
 					<execution>
-						<phase>execute-prepare</phase>	
+						<phase>check-poms</phase>	
+						
 						<goals>
 							<goal>prepare</goal>
 						</goals>
