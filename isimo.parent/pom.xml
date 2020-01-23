@@ -167,7 +167,7 @@
 				</executions>
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
-					<ignoreSnapshots>true</ignoreSnapshots>
+					<allowTimestampedSnapshots>true</allowTimestampedSnapshots>
 					<tagNameFormat>@{project.version}</tagNameFormat>
 					<releaseVersion>1.1.RELEASE</releaseVersion>
 					<developmentVersion>1.1.SNAPSHOT</developmentVersion>
