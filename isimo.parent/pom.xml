@@ -153,38 +153,55 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.8</version>
-				<executions>
-					<execution>
-						<phase>prepare</phase>
-						<configuration>
-							<target>
-								<path id="p.classpath">
-									<pathelement path="${mvn.test.classpath}" />
-								</path>
-								<echo>test ant!</echo>
-							</target>	
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 			 <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<version>3.0.0-M1</version>
+				<executions>
+					<execution>
+						<phase>check-poms</phase>	
+						<goals>
+							<goal>prepare</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<ignoreSnapshots>true</ignoreSnapshots>
 					<tagNameFormat>@{project.version}</tagNameFormat>
 					<releaseVersion>1.1.RELEASE</releaseVersion>
 					<developmentVersion>1.1.SNAPSHOT</developmentVersion>
 				</configuration>
 			</plugin>
-
 		</plugins>
   	</build>
   	<profiles>
+			<profile>
+				<id>ant-run-release</id>
+				<build>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-antrun-plugin</artifactId>
+							<version>1.8</version>
+							<executions>
+								<execution>
+									<id>test-antrun</id>
+									<configuration>
+										<target>
+											<path id="p.classpath">
+												<pathelement path="${mvn.test.classpath}" />
+											</path>
+											<echo>test ant!!</echo>
+										</target>
+									</configuration>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</build>
+			</profile>
+ 
   			<profile>
 			<id>smartweb</id>
 			<activation>
