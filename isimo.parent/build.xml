@@ -1,0 +1,57 @@
+<project name="releaseAnt">
+	
+	<property name="version" value="2.3-Sel-3.141.59" />
+	<property file="release.properties"/>
+	<property name="git.username" value=""/>
+	<property name="git.password" value=""/>
+	
+	<target name="releaseProperties">
+		<tstamp>
+			<format property="time.stamp" pattern="yyyyMMdd_HHmmss"/>
+		</tstamp>
+		<propertyfile file="release.properties">
+			<entry  key="timestamped.version" value="${version}-${time.stamp}"/>
+		</propertyfile>
+	</target>
+
+	<condition property="isWindows">
+		<os family="windows" />
+	</condition>
+
+	<condition property="isUnix">
+		<os family="unix" />
+	</condition>
+
+	<target name="mvn_windows_setup" if="isWindows">
+		<property name="mvn.executable" value="cmd" />
+		<property name="mvn.args" value="/c" />
+	</target>
+
+	<target name="mvn_unix_setup" if="isUnix">
+		<property name="mvn.executable" value="sh" />
+		<property name="mvn.args" value="-c" />
+	</target>
+
+	<target name="run-mvn-goals" depends="mvn_windows_setup, mvn_unix_setup">
+		<exec dir="${basedir}" executable="${mvn.executable}">
+			<arg line="${mvn.args} 'mvn ${p_goals}'" />
+		</exec>
+	</target>
+
+
+	<target name="releasePrepare">
+		<echo> Preparing release with version: ${timestamped.version}</echo>
+		<antcall target="run-mvn-goals">
+			<param name="p_goals" value="-B release:prepare -DreleaseVersion=${timestamped.version} -Dusername=${git.username} -Dpassword=${git.password}"/>
+		</antcall>
+	</target>
+	
+	<target name="releasePerform">
+		<echo> Performing release with version: ${timestamped.version}</echo>
+		<antcall target="run-mvn-goals">
+			<param name="p_goals" value="-B release:perform"/>
+		</antcall>
+	</target>
+	
+
+</project>
