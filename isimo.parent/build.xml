@@ -1,7 +1,7 @@
 <project name="releaseAnt">
 	
 	<property name="version" value="2.3-Sel-3.141.59" />
-	<property file="release.properties"/>
+	<property file="antrelease.properties"/>
 	<property name="git.username" value=""/>
 	<property name="git.password" value=""/>
 	
@@ -9,7 +9,7 @@
 		<tstamp>
 			<format property="time.stamp" pattern="yyyyMMdd_HHmmss"/>
 		</tstamp>
-		<propertyfile file="release.properties">
+		<propertyfile file="antrelease.properties">
 			<entry  key="timestamped.version" value="${version}-${time.stamp}"/>
 		</propertyfile>
 	</target>
