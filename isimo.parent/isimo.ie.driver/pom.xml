@@ -6,7 +6,7 @@
   	<parent>
 		<groupId>com.isimo</groupId>
 		<artifactId>isimo.parent</artifactId>
-		<version>2.3-Sel-3.141.59-SNAPSHOT</version>
+		<version>2.3-Sel-3.141.59-20200124_152101</version>
 	</parent>
   <artifactId>isimo.ie.driver</artifactId>
   <profiles>
@@ -30,13 +30,13 @@
 										</path>
 										<taskdef classpathref="p.classpath" resource="net/sf/antcontrib/antlib.xml" />
 										<if>
-											<not><available file="${project.build.directory}/geckodriver-v${gecko.driver.version}-win64.zip"/></not>
+											<not><available file="${project.build.directory}/geckodriver-v${gecko.driver.version}-win64.zip" /></not>
 											<then>
-												<get src="https://selenium-release.storage.googleapis.com/${ie.driver.version}/IEDriverServer_Win32_${ie.driver.version}.zip" dest="${project.build.directory}/IEDriverServer_Win32_${ie.driver.version}.zip"/>
+												<get src="https://selenium-release.storage.googleapis.com/${ie.driver.version}/IEDriverServer_Win32_${ie.driver.version}.zip" dest="${project.build.directory}/IEDriverServer_Win32_${ie.driver.version}.zip" />
 											</then>
 										</if>
-										<mkdir dir="${project.build.directory}/generated-sources/isimoresources"/>
-										<unzip src="${project.build.directory}/IEDriverServer_Win32_${ie.driver.version}.zip" dest="${project.build.directory}/generated-sources/isimoresources"/>
+										<mkdir dir="${project.build.directory}/generated-sources/isimoresources" />
+										<unzip src="${project.build.directory}/IEDriverServer_Win32_${ie.driver.version}.zip" dest="${project.build.directory}/generated-sources/isimoresources" />
 									</target>
 								</configuration>
 								<goals>
