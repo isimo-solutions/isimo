@@ -19,7 +19,7 @@
 	</modules>
 	
 	<scm>
-		<developerConnection>scm:git:https://github.com/isimo-solutions/isimo/tree/master/isimo.parent</developerConnection>
+		<developerConnection>scm:git:https://github.com/isimo-solutions/isimo.git</developerConnection>
 	</scm>
 	
   	<dependencies>
