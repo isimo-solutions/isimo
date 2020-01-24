@@ -162,7 +162,6 @@
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<allowTimestampedSnapshots>true</allowTimestampedSnapshots>
 					<tagNameFormat>@{project.version}</tagNameFormat>
-					<releaseVersion>1.1.RELEASE</releaseVersion>
 					<developmentVersion>2.3-Sel-3.141.59-SNAPSHOT</developmentVersion>
 				</configuration>
 			</plugin>
