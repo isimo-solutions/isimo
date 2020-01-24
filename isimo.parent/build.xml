@@ -1,7 +1,6 @@
 <project name="releaseAnt">
 	
 	<property name="version" value="2.3-Sel-3.141.59" />
-	<property file="antrelease.properties"/>
 	<property name="git.username" value=""/>
 	<property name="git.password" value=""/>
 	
@@ -43,6 +42,7 @@
 	</target>
 
 	<target name="releasePrepare">
+		<property file="antrelease.properties"/>
 		<echo> Preparing release with version: ${timestamped.version}</echo>
 		<antcall target="run-mvn-goals">
 			<param name="p_goals" value="-B release:prepare -DreleaseVersion=${timestamped.version} -Dusername=${git.username} -Dpassword=${git.password}"/>
@@ -50,6 +50,7 @@
 	</target>
 	
 	<target name="releasePerform">
+		<property file="antrelease.properties"/>
 		<echo> Performing release with version: ${timestamped.version}</echo>
 		<antcall target="run-mvn-goals">
 			<param name="p_goals" value="-B release:perform -Dusername=${git.username} -Dpassword=${git.password}"/>
