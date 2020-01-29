@@ -40,7 +40,7 @@ mvn -B archetype:generate -DarchetypeGroupId=com.isimo
 Where instead of <…> you need to provide data for new project
 
 Variable description:
-- 	DarchetypeVersion - wersion of the framework you are using
+- 	archetypeVersion - wersion of the framework you are using
 -   groupId – group name in which project will belong
 -   artifactId – name of created project
 -   version – version number of created project
