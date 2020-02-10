@@ -1,15 +1,17 @@
 <project name="releaseAnt">
 	
-	<property name="version" value="2.3-Sel-3.141.59" />
+	<property name="release.version" value="2.3-Sel-3.141.59"/>
+	<property name="new.dev.version" value="2.3-Sel-3.141.59"/>
 	<property name="git.username" value=""/>
 	<property name="git.password" value=""/>
 	
 	<target name="releaseProperties">
 		<tstamp>
-			<format property="time.stamp" pattern="yyyyMMdd_HHmmss"/>
+			<format property="time.stamp" pattern="yyyyMMddHHmmss"/>
 		</tstamp>
 		<propertyfile file="antrelease.properties">
-			<entry  key="timestamped.version" value="${version}-${time.stamp}"/>
+			<entry key="timestamp" value="${time.stamp}"/>
+			<entry  key="timestamped.version" value="${release.version}-${time.stamp}"/>
 		</propertyfile>
 	</target>
 
@@ -45,7 +47,7 @@
 		<property file="antrelease.properties"/>
 		<echo> Preparing release with version: ${timestamped.version}</echo>
 		<antcall target="run-mvn-goals">
-			<param name="p_goals" value="-B release:prepare -DreleaseVersion=${timestamped.version} -Dusername=${git.username} -Dpassword=${git.password}"/>
+			<param name="p_goals" value="-B release:prepare -DdevelopmentVersion=${new.dev.version}-SNAPSHOT -DreleaseVersion=${timestamped.version} -Dusername=${git.username} -Dpassword=${git.password}"/>
 		</antcall>
 	</target>
 	
