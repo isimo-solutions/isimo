@@ -1,5 +1,6 @@
 <project name="releaseAnt">
-	
+	<property name="release.properties"/>
+	<property file="${release.properties}"/>
 	<property name="release.version" value="2.3-Sel-3.141.59"/>
 	<property name="new.dev.version" value="2.3-Sel-3.141.59"/>
 	<property name="git.username" value=""/>
