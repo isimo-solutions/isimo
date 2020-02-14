@@ -13,6 +13,7 @@
 		<propertyfile file="antrelease.properties">
 			<entry key="timestamp" value="${time.stamp}"/>
 			<entry  key="timestamped.version" value="${release.version}-${time.stamp}"/>
+			<entry  key="branch" value="refs/tags/${release.version}-${time.stamp}"/>
 		</propertyfile>
 	</target>
 
