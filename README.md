@@ -57,7 +57,8 @@ mvn -e -Disimo.closebrowseronerror=false -Denv=default -Dtestscenario=helloworld
 In order to create new testcase you need to create .xml file in the testcases folder (which name was specified during project creation). Name of the .xml file is also name of the new testcase.
 ```
 <scenario xmlns="http://isimo.com/scenario/1.0" timeout="100000000">  
-	<actions>  
+	<actions>
+	...
 	</actions>  
 </scenario>
 ```
