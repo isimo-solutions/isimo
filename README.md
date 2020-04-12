@@ -61,4 +61,15 @@ In order to create new testcase you need to create .xml file in the testcases fo
 	</actions>  
 </scenario>
 ```
-Between "actions" tags write actions you want to be performed during test launch.
+Between "actions" tags write actions you want to be performed during test launch. For example, the following testcase will open the Google Search and start the query with the keyword "Hello World":
+
+```
+<scenario xmlns="http://isimo.com/scenario/1.0" timeout="100000000">
+	<actions>
+		<open url="http://google.com"/>
+		<input css="input[name='q']" value="Hello World"/>
+		<click xpath="//input[@name='btnK']"/>
+	</actions>
+</scenario>
+```
+
