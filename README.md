@@ -40,10 +40,10 @@ mvn -B archetype:generate -DarchetypeGroupId=com.isimo
 Where instead of <…> you need to provide data for new project
 
 Variable description:
-- 	archetypeVersion - wersion of the framework you are using
--   groupId – group name in which project will belong
--   artifactId – name of created project
--   version – version number of created project
+- 	archetypeVersion - version of the framework you are using
+-   groupId – groupId of the newly created project
+-   artifactId – name of the created project
+-   version – version number of the created project
 -   testcasesDir – name of the folder where project will store testcases files
 
 ### Launching first testcase
@@ -57,8 +57,20 @@ mvn -e -Disimo.closebrowseronerror=false -Denv=default -Dtestscenario=helloworld
 In order to create new testcase you need to create .xml file in the testcases folder (which name was specified during project creation). Name of the .xml file is also name of the new testcase.
 ```
 <scenario xmlns="http://isimo.com/scenario/1.0" timeout="100000000">  
-	<actions>  
+	<actions>
+	...
 	</actions>  
 </scenario>
 ```
-Between "actions" tags write actions you want to be performed during test launch.
+Between "actions" tags write actions you want to be performed during test launch. For example, the following testcase will open the Google Search and start the query with the keyword "Hello World":
+
+```
+<scenario xmlns="http://isimo.com/scenario/1.0" timeout="100000000">
+	<actions>
+		<open url="http://google.com"/>
+		<input css="input[name='q']" value="Hello World"/>
+		<click xpath="//input[@name='btnK']"/>
+	</actions>
+</scenario>
+```
+
