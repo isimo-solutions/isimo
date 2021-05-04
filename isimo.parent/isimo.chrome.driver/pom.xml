@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <properties>
+	<chrome.driver.version>91.0.4472.19</chrome.driver.version>
+  </properties>
+  	<parent>
+		<groupId>com.isimo</groupId>
+		<artifactId>isimo.parent</artifactId>
+		<version>2.3-Sel-3.141.59-SNAPSHOT</version>
+	</parent>
+  <artifactId>isimo.chrome.driver</artifactId>
+  <profiles>
+  		<profile>
+			<id>downloadchromedriver</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
+						<executions>
+							<execution>
+								<phase>generate-resources</phase>
+								<configuration>
+									<target>
+										<path id="p.classpath">
+											<pathelement path="${mvn.test.classpath}" />
+										</path>
+										<taskdef classpathref="p.classpath" resource="net/sf/antcontrib/antlib.xml" />
+										<if>
+											<not><available file="${project.build.directory}/geckodriver-v${gecko.driver.version}-win64.zip" /></not>
+											<then>
+												<get src="https://chromedriver.storage.googleapis.com/${chrome.driver.version}/chromedriver_win32.zip" dest="${project.build.directory}/chromedriver-v${chrome.driver.version}-win32.zip" />
+											</then>
+										</if>
+										<mkdir dir="${project.build.directory}/generated-sources/isimoresources" />
+										<unzip src="${project.build.directory}/chromedriver-v${chrome.driver.version}-win32.zip" dest="${project.build.directory}/generated-sources/isimoresources" />
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>ant-contrib</groupId>
+								<artifactId>ant-contrib</artifactId>
+								<version>1.0b3</version>
+								<exclusions>
+									<exclusion>
+										<artifactId>ant</artifactId>
+										<groupId>ant</groupId>
+									</exclusion>
+								</exclusions>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+  </profiles>
+</project>
