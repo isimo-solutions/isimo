@@ -19,7 +19,7 @@
             <updatePolicy>never</updatePolicy>
             <checksumPolicy>fail</checksumPolicy>
           </snapshots>
-          <url>http://smartweb.nazwa.pl:8080/repository/internal</url>
+          <url>https://isimo.solutions/mvnrepo/repository/internal</url>
           <layout>default</layout>
         </repository>
 		<repository>
@@ -31,7 +31,7 @@
           <snapshots>
             <enabled>false</enabled>
           </snapshots>
-          <url>http://smartweb.nazwa.pl:8080/repository/releases</url>
+          <url>https://isimo.solutions/mvnrepo/repository/releases</url>
           <layout>default</layout>
         </repository>
 		<repository>
@@ -43,7 +43,7 @@
           <snapshots>
             <enabled>true</enabled>
           </snapshots>
-          <url>http://smartweb.nazwa.pl:8080/repository/snapshots</url>
+          <url>https://isimo.solutions/mvnrepo/repository/snapshots</url>
           <layout>default</layout>
         </repository>
 		<repository>
@@ -54,7 +54,7 @@
             <updatePolicy>always</updatePolicy>
             <checksumPolicy>warn</checksumPolicy>
           </releases>
-          <url>http://smartweb.nazwa.pl:8080/repository/third-party</url>
+          <url>https://isimo.solutions/mvnrepo/repository/third-party</url>
           <layout>default</layout>
         </repository>
 		<repository>
@@ -81,7 +81,7 @@
 		</pluginRepository>
 		<pluginRepository>
 			<id>smartweb</id>
-			<url>http://smartweb.nazwa.pl:8080/repository/internal</url>
+			<url>https://isimo.solutions/mvnrepo/repository/internal</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -98,7 +98,7 @@
           <snapshots>
             <enabled>false</enabled>
           </snapshots>
-          <url>http://smartweb.nazwa.pl:8080/repository/releases</url>
+          <url>https://isimo.solutions/mvnrepo/repository/releases</url>
         </pluginRepository>
 		<pluginRepository>
           <id>smartweb-snapshots</id>
@@ -108,7 +108,7 @@
           <snapshots>
             <enabled>true</enabled>
           </snapshots>
-          <url>http://smartweb.nazwa.pl:8080/repository/snapshots</url>
+          <url>https://isimo.solutions/mvnrepo/repository/snapshots</url>
 		</pluginRepository>
 	</pluginRepositories>
     </profile>
