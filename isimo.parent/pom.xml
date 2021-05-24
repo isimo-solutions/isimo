@@ -91,6 +91,8 @@
 			<groupId>com.oopsconsultancy</groupId>
 			<artifactId>xmltask</artifactId>
 			<version>1.16</version>
+			<scope>system</scope>
+			<systemPath>lib/</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
