@@ -1,6 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <properties>
+    <ie.driver.download.url>https://selenium-release.storage.googleapis.com/${ie.driver.version}</ie.driver.download.url>
 	<ie.driver.version>3.9.0</ie.driver.version>
   </properties>
   	<parent>
@@ -32,7 +33,7 @@
 										<if>
 											<not><available file="${project.build.directory}/geckodriver-v${gecko.driver.version}-win64.zip" /></not>
 											<then>
-												<get src="https://selenium-release.storage.googleapis.com/${ie.driver.version}/IEDriverServer_Win32_${ie.driver.version}.zip" dest="${project.build.directory}/IEDriverServer_Win32_${ie.driver.version}.zip" />
+												<get src="${ie.driver.download.url}/IEDriverServer_Win32_${ie.driver.version}.zip" dest="${project.build.directory}/IEDriverServer_Win32_${ie.driver.version}.zip" />
 											</then>
 										</if>
 										<mkdir dir="${project.build.directory}/generated-sources/isimoresources" />
