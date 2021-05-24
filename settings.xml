@@ -5,6 +5,14 @@
 	<profiles>
     <profile>
 	  <id>smartweb</id>
+	    <mirrors>
+    <mirror>
+      <id>central_mirror</id>
+      <name>PlanetMirror Australia</name>
+      <url>http://downloads.planetmirror.com/pub/maven2</url>
+      <mirrorOf>central</mirrorOf>
+    </mirror>
+  </mirrors>
       <repositories>
         <repository>
           <id>smartweb</id>
@@ -69,16 +77,6 @@
 		</repository>    
       </repositories>
 	  <pluginRepositories>
-		<pluginRepository>
-			<id>central</id>
-			<url>https://repo1.maven.org/maven2</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
 		<pluginRepository>
 			<id>smartweb</id>
 			<url>https://isimo.solutions/mvnrepo/repository/internal</url>
