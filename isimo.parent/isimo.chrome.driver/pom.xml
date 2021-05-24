@@ -2,6 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <properties>
 	<chrome.driver.version>89.0.4389.23</chrome.driver.version>
+	<chrome.driver.url>https://chromedriver.storage.googleapis.com/${chrome.driver.version}</chrome.driver.url>
   </properties>
   	<parent>
 		<groupId>com.isimo</groupId>
@@ -32,7 +33,7 @@
 										<if>
 											<not><available file="${project.build.directory}/geckodriver-v${gecko.driver.version}-win64.zip" /></not>
 											<then>
-												<get src="https://chromedriver.storage.googleapis.com/${chrome.driver.version}/chromedriver_win32.zip" dest="${project.build.directory}/chromedriver-v${chrome.driver.version}-win32.zip" />
+												<get src="${chrome.driver.url}/chromedriver_win32.zip" dest="${project.build.directory}/chromedriver-v${chrome.driver.version}-win32.zip" />
 											</then>
 										</if>
 										<mkdir dir="${project.build.directory}/generated-sources/isimoresources" />

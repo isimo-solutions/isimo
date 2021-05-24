@@ -29,6 +29,13 @@
 		    <artifactId>httpclient</artifactId>
     		<version>4.5.5</version>
     </dependency>
+			<dependency>
+			<groupId>com.oopsconsultancy</groupId>
+			<artifactId>xmltask</artifactId>
+			<version>1.16</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/xmltask-1.16.jar</systemPath>
+		</dependency>
 	</dependencies>
 	
 </project>

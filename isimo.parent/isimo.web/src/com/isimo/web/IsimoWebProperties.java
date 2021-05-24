@@ -210,7 +210,7 @@ public class IsimoWebProperties {
 		}
 		
 		public static class Chrome {
-			public String driver, binary;
+			public String driver, binary, profile;
 
 			public String getDriver() {
 				return driver;
