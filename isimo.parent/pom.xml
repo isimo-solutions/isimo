@@ -12,7 +12,7 @@
 		<module>isimo.core</module>
 		<module>isimo.web</module>
 		<module>isimo.archetype</module>
-<!--		<module>isimo.firefox.portable</module>-->
+		<module>isimo.firefox.portable</module>
 		<module>isimo.gecko.driver</module>
 		<module>isimo.chrome.driver</module>
 		<module>isimo.ie.driver</module>
