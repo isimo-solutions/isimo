@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <properties>
-	<firefox.version>70.0.1</firefox.version>
-	<firefox.download.url>https://www.firefox-usb.com/download</firefox.download.url>
+	<firefox.version>89.0</firefox.version>
+	<firefox.download.url>https://isimo.solutions/downloads/FirefoxPortable-${firefox.version}.zip</firefox.download.url>
   </properties>
   	<parent>
 		<groupId>com.isimo</groupId>
