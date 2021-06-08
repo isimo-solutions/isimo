@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.isimo</groupId>
 		<artifactId>isimo.parent</artifactId>
-		<version>2.3-Sel-3.141.59-20210608101456</version>
+		<version>2.3-Sel-3.141.59-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>isimo.web</artifactId>
