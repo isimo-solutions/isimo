@@ -74,8 +74,19 @@
 		<runtarget target="testScenario"/>
 	</target>
 
-	<target name="moduletest" >
+	<target name="moduletest">
 		<echo>phase:moduletest</echo>
+		<for param="module" list="${modules}">
+			<sequential>
+				<var unset="true" name="module"/>
+				<var name="module" value="@{module}"/>
+				<runtarget target="singlemoduletest"/>
+			</sequential>
+		</for>
+		<runtarget target="testManyScenarios"/>
+	</target>
+	
+	<target name="singlemoduletest" >
 		<property name="com.isimo.scenarios" value="${project.build.directory}/test-classes"/>
 		<fileset id="isimo.scenarios" dir="${com.isimo.scenarios}">
 			<include name="${module}/**/*.xml"/>
