@@ -3,11 +3,13 @@ package com.isimo.core;
 import java.io.StringReader;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.isimo.core.annotations.IsimoErrorHandler;
 import com.isimo.core.xml.LocationAwareElement;
 
 @IsimoErrorHandler
+@Component
 public class CoreErrorHandler extends ErrorHandler {
 	
 	@Override

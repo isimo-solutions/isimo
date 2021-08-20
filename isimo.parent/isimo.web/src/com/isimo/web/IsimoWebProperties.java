@@ -62,10 +62,23 @@ public class IsimoWebProperties {
 				downloads, downloadsunix, downloadswindows;
 		public Boolean takescreenshotonerror = true;
 		public Boolean closebrowseronerror = true;
-		public int shorttimeout = 40, asserttimeout = 10, invisibilitytimeout = 5, retrycount = 3;
+		public Boolean closebrowseraftertest = true;
+		public int shorttimeout = 40, asserttimeout = 10, invisibilitytimeout = 5, retrycount = 3, maxcounter=5;
 		
 		
 		
+		public Boolean getClosebrowseraftertest() {
+			return closebrowseraftertest;
+		}
+		public void setClosebrowseraftertest(Boolean closebrowseraftertest) {
+			this.closebrowseraftertest = closebrowseraftertest;
+		}
+		public int getMaxcounter() {
+			return maxcounter;
+		}
+		public void setMaxcounter(int maxcounter) {
+			this.maxcounter = maxcounter;
+		}
 		public Ready getReady() {
 			return ready;
 		}

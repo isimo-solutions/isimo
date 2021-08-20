@@ -50,6 +50,8 @@ public class WebDriverProvider {
 	public void waitForPageLoad() {
 		String html1, html2;
 		boolean ok = false;
+		if(WebDriverProvider.getInstance().getWebDriver() == null)
+			return;
 		while(!ok) {
 			html1 = getPageSource();
 			html2 = getPageSource();

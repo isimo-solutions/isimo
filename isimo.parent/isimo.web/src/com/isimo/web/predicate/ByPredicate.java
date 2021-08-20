@@ -33,13 +33,13 @@ public class ByPredicate extends Predicate<Object> {
 	public Pair<Boolean, Object> evaluate(Action action) {
 		ExpectedCondition<Pair<Boolean, Object>> cond = null;
 		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), IsimoWebProperties.getInstance().isimo.asserttimeout);
-		wait.pollingEvery(Duration.ofMillis(100));
+		wait.pollingEvery(Duration.ofMillis(1000));
 		By by = WebAction.getByNoException(action.getDefinition(), action);
 		if(by != null) {
 			
 			if(action instanceof WebAction)
 				SpringContext.getBean(WebDriverProvider.class).waitForPageLoad();
-			int maxcounter = IsimoWebProperties.getInstance().isimo.shorttimeout;
+			int maxcounter = IsimoWebProperties.getInstance().isimo.maxcounter;
 			String maxcounterstr = action.getDefinition().attributeValue("maxcounter");
 			if(maxcounterstr!=null)
 				maxcounter = Integer.parseInt(maxcounterstr);

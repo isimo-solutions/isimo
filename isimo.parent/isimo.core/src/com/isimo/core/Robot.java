@@ -26,6 +26,7 @@ public class Robot extends AtomicAction {
 	@Override
 	public void executeAtomic() throws Exception {
 		super.executeAtomic();
+		System.setProperty("java.awt.headless","false");
 		java.awt.Robot robot = new java.awt.Robot();
 		robot.setAutoWaitForIdle(true);
 		if (definition.attribute("texttotype") != null) {
@@ -35,7 +36,7 @@ public class Robot extends AtomicAction {
 			int i = 0;
 			while(true) {
 				try {
-					sysClip.setContents(stringSelection, stringSelection);
+					getSysclip().setContents(stringSelection, stringSelection);
 					break;
 				} catch(IllegalStateException e) {
 					if(i++ > isimoProperties.isimo.actiontimeout)

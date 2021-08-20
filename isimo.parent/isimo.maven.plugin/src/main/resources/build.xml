@@ -2,6 +2,7 @@
 	<!-- To use one of the tasks in the project, this line needs to be added in build-->
 	<property file="local.properties"/>
 	<property file="config/default.properties"/>
+	<property name="isimo.headless" value="true"/>
 	<property name="mvn.test.classpath" refid="maven.test.classpath" />
 	<property name="mvn.runtime.classpath" refid="maven.runtime.classpath" />
 		<path id="project.classpath">		
@@ -68,7 +69,7 @@
 	
 	<target name="test">
 		<property name="scenario" value="${module}/${testscenario}"/>
-		<property name="com.isimo.scenarios" value="${project.build.directory}/test-classes"/>
+		<property name="com.isimo.scenarios" value="${project.build.directory}/test-classes/${module}"/>
 		<echo>mvn.test.classpath=${mvn.test.classpath}</echo>
 		<echo>scenario=${scenario}</echo>
 		<runtarget target="testScenario"/>
@@ -86,10 +87,10 @@
 		<runtarget target="testManyScenarios"/>
 	</target>
 	
-	<target name="singlemoduletest" >
-		<property name="com.isimo.scenarios" value="${project.build.directory}/test-classes"/>
-		<fileset id="isimo.scenarios" dir="${com.isimo.scenarios}">
-			<include name="${module}/**/*.xml"/>
+	<target name="singlemoduletest">
+		<echo>singlemoduletest:com.isimo.scenarios=${com.isimo.scenarios};module=${module}</echo>
+		<fileset id="isimo.scenarios" dir="${com.isimo.scenarios}/${module}">
+			<include name="**/*.xml"/>
 		</fileset>
 		<property name="configdir" value="${basedir}/config"/>
 		<echo>mvn.test.classpath=${mvn.test.classpath}</echo>
@@ -186,7 +187,7 @@
 			<arg line="/F /FI &quot;IMAGENAME eq geckodriver*&quot; /T" />
 		</exec>
 		<var name="timeout" value="360000000" />
-		<xmltask source="${com.isimo.scenarios}/${scenario}.xml">
+		<xmltask source="${com.isimo.scenarios}/${module}/${scenario}.xml">
 			<copy path="/*[name()='scenario']/@timeout" property="tout"/>
 		</xmltask>
 		<if>
@@ -208,11 +209,13 @@
 		<if>
 			<not><equals arg1="${isimo.skip.junit}" arg2="true"/></not>
 			<then>
+				<echo>scenariopath=${module}/${scenario}</echo>
 				<junit fork="true" printsummary="true" showoutput="true" dir="${project.build.directory}/tests/${scenarioname}" timeout="${timeout}">
 					<jvmarg line="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=${isimo.waitforremotedebug},address=25005"/>
-					<jvmarg value="-Dscenario=${scenario}"/>
+					<jvmarg value="-Dscenario=${module}/${scenario}"/>
 					<jvmarg value="-Disimo.report.dir=${project.build.directory}/tests/${scenarioname}"/>
 					<jvmarg value="-Dfile.encoding=UTF-8"/>
+					<jvmarg value="-Djava.awt.headless=${isimo.headless}"/>
 					<!--<jvmarg value="-Dcom.isimo.scenarios=${com.isimo.scenarios}"/>
 					<jvmarg value="-Disimo.waitforremotedebug=${isimo.waitforremotedebug}"/>
 					<jvmarg value="-Disimo.nocommandline=${isimo.nocommandline}"/>

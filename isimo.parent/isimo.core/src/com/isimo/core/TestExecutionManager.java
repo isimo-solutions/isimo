@@ -1,7 +1,9 @@
 package com.isimo.core;
 
 import java.io.File;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -218,6 +220,16 @@ public class TestExecutionManager {
 		String retval = "";
 		if ("property".equals(fun)) {
 			retval = action.getProperty(params);
+		}
+		if ("absolutepath".equals(fun)) {
+			try {
+				URL res = getClass().getClassLoader().getResource(params);
+				File file = Paths.get(res.toURI()).toFile();
+				retval = file.getAbsolutePath();
+				retval = retval.replaceAll("\\\\","\\\\\\\\");
+			} catch(Exception e) {
+				throw new RuntimeException(e);
+			}
 		}
 		if ("global".equals(fun)) {
 			retval = action.getGlobal(params);

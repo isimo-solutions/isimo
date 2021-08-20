@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -106,7 +107,14 @@ public class TestCases {
 	
 	
 	public List<Initializer> initializers = null;
-	public List<ErrorHandler> finalizers = null;
+	public List<ErrorHandler> errorHandlers = null;
+	
+	@PostConstruct
+	public void init() {
+		errorHandlers = appCtx.getBeansOfType(ErrorHandler.class).values().stream().map(x -> (ErrorHandler)x).collect(Collectors.toList());
+		initializers = appCtx.getBeansOfType(Initializer.class).values().stream().map(x -> (Initializer)x).collect(Collectors.toList());
+
+	}
 	
 	
 
@@ -121,16 +129,10 @@ public class TestCases {
 	}
 	
 	public List<ErrorHandler> getErrorHandlers() {
-		if(finalizers == null) {
-			finalizers = appCtx.getBeansWithAnnotation(IsimoErrorHandler.class).values().stream().map(x -> (ErrorHandler)x).collect(Collectors.toList());
-		}
-		return finalizers;
+		return errorHandlers;
 	}
 	
 	public List<Initializer> getInitializers() {
-		if(initializers == null) {
-			initializers = appCtx.getBeansWithAnnotation(IsimoInitializer.class).values().stream().map(x -> (Initializer)x).collect(Collectors.toList());
-		}
 		return initializers;
 	}
 	
