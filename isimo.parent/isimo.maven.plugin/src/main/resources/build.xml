@@ -154,9 +154,9 @@
 		<echo>configdir=${configdir}</echo>
 		<var unset="true" name="scenarioname"/>
 		<propertyregex input="${scenario}" property="scenarioname" override="true" regexp="\/" replace="_" global="true" defaultValue="${scenario}"/>
-		<echo>Starting scenario ${scenario}, report in the directory ${project.build.directory}/tests/${scenarioname}</echo>
-		<mkdir dir="${project.build.directory}/tests/${scenarioname}"/>
-		<genproperties input="${project.build.directory}/tests/input.properties" result="${project.build.directory}/tests/${scenarioname}/test.properties" mavenprops="${project.build.directory}/tests/maven.properties"/>
+		<echo>Starting scenario ${scenario}, report in the directory ${project.build.directory}/tests/${module}/${scenarioname}</echo>
+		<mkdir dir="${project.build.directory}/tests/${module}/${scenarioname}"/>
+		<genproperties input="${project.build.directory}/tests/input.properties" result="${project.build.directory}/tests/${module}/${scenarioname}/test.properties" mavenprops="${project.build.directory}/tests/maven.properties"/>
 		<!-- run new test in a separate VM -->
 		<!-- Can fork a separate process so that a System.exit() does not kill the Ant build -->
 		<!-- Runs tests from the JUnit testing framework -->
@@ -176,6 +176,9 @@
 		<echo>browser=${browser}</echo>
 		<exec command="taskkill">
 			<arg line="/F /IM iexplore.exe /T" />
+		</exec>
+		<exec command="taskkill">
+			<arg line="/F /IM chromedriver.exe /T" />
 		</exec>
 		<exec command="taskkill">
 			<arg line="/F /FI &quot;IMAGENAME eq IEDriverServer*&quot; /T" />
@@ -210,10 +213,10 @@
 			<not><equals arg1="${isimo.skip.junit}" arg2="true"/></not>
 			<then>
 				<echo>scenariopath=${module}/${scenario}</echo>
-				<junit fork="true" printsummary="true" showoutput="true" dir="${project.build.directory}/tests/${scenarioname}" timeout="${timeout}">
+				<junit fork="true" printsummary="true" showoutput="true" dir="${project.build.directory}/tests/${module}/${scenarioname}" timeout="${timeout}">
 					<jvmarg line="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=${isimo.waitforremotedebug},address=25005"/>
 					<jvmarg value="-Dscenario=${module}/${scenario}"/>
-					<jvmarg value="-Disimo.report.dir=${project.build.directory}/tests/${scenarioname}"/>
+					<jvmarg value="-Disimo.report.dir=${project.build.directory}/tests/${module}/${scenarioname}"/>
 					<jvmarg value="-Dfile.encoding=UTF-8"/>
 					<jvmarg value="-Djava.awt.headless=${isimo.headless}"/>
 					<!--<jvmarg value="-Dcom.isimo.scenarios=${com.isimo.scenarios}"/>
@@ -223,7 +226,7 @@
 					<jvmarg value="-Disimo.model.path=${isimo.model.path}"/>
 					<jvmarg value="-Disimo.browser=${isimo.browser}"/>-->
 					<classpath refid="project.classpath"/>
-					<test name="com.isimo.core.TestCases" haltonerror="false" haltonfailure="false" todir="${project.build.directory}/tests/${scenarioname}" outfile="${scenarioname}_junit" methods="testScenario" fork="true">
+					<test name="com.isimo.core.TestCases" haltonerror="false" haltonfailure="false" todir="${project.build.directory}/tests/${module}/${scenarioname}" outfile="${scenarioname}_junit" methods="testScenario" fork="true">
 						<formatter type="xml" usefile="yes"/>
 						<formatter type="plain" usefile="yes"/>
 					</test>
@@ -253,7 +256,7 @@
 				<var name="sc" value="@{file}"/>
 				<propertyregex input="${sc}" override="true" property="scslash" regexp="\\" replace="\/" global="true">
 				</propertyregex>
-				<propertyregex input="${com.isimo.scenarios}" override="true" property="scbase" regexp="\\" replace="\/" global="true">
+				<propertyregex input="${com.isimo.scenarios}/${module}" override="true" property="scbase" regexp="\\" replace="\/" global="true">
 				</propertyregex>
 				<propertyregex input="${scslash}" override="true" property="scenarioname" regexp="^${scbase}\/(.*)\.xml$" replace="\1" global="true">
 				</propertyregex>
