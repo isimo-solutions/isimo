@@ -80,8 +80,8 @@ Web selectors allow for referencing elements in the webpage content. Isimo uses 
 | Attribute/Selector name | Description | Example | Example element found |
 |-------------------------|-------------|---------|-----------------------|
 | id			  | Simple referencing using elements id attribute | <click id="somebutton"/> | <button id="somebutton"> |
-| CSS                     | Referencing using CSS selectors, see https://www.w3schools.com/cssref/css_selectors.asp for extesive documentation, less powerful than XPath | ```<click css=".someclass"/\>``` | <button class="someclass"/> |
-| XPath                     | Referencing using XPath expressions, see https://www.w3schools.com/xml/xpath_intro.asp for tutorial | <click xpath="//span[id='parent' and button[@class='someclass']]"/> | <span id="parent"><button class="someclass"/></span> |
+| CSS                     | Referencing using CSS selectors, see https://www.w3schools.com/cssref/css_selectors.asp for extesive documentation, less powerful than XPath | ```<click css=".someclass"/\>``` | ```<button class="someclass"/>``` |
+| XPath                     | Referencing using XPath expressions, see https://www.w3schools.com/xml/xpath_intro.asp for tutorial | ```<click xpath="//span[id='parent' and button[@class='someclass']]"/>``` | ```<span id="parent"><button class="someclass"/></span>``` |
 
 ### Most commonly used web actions
 
