@@ -74,12 +74,15 @@ Between "actions" tags write actions you want to be performed during test launch
 </scenario>
 ```
 
+### Properties, variables
+TODO
+
 ### Web Selectors
 Web selectors allow for referencing elements in the webpage content. Isimo uses the following types of selectors. Selectors are expressed as attributes on various web action elements:
 
 | Attribute/Selector name | Description | Example selector usage | Example element found |
 |-------------------------|-------------|---------|-----------------------|
-| id			  | Simple referencing using elements id attribute | ```<click id="somebutton"/>``` | ```<button id="somebutton">``` |
+| ID			  | Simple referencing using elements id attribute | ```<click id="somebutton"/>``` | ```<button id="somebutton">``` |
 | CSS                     | Referencing using CSS selectors, see https://www.w3schools.com/cssref/css_selectors.asp for extesive documentation, less powerful than XPath | ```<click css=".someclass"/\>``` | ```<button class="someclass"/>``` |
 | XPath                     | Referencing using XPath expressions, see https://www.w3schools.com/xml/xpath_intro.asp for tutorial | ```<click xpath="//span[id='parent' and button[@class='someclass']]"/>``` | ```<span id="parent"><button class="someclass"/></span>``` |
 
@@ -87,12 +90,27 @@ Web selectors allow for referencing elements in the webpage content. Isimo uses 
 
 #### click
 
-Clicks on the given
+Clicks on the element in the webpage provided by the selector expression. Additionally it may have the following attributes:
+
+| Attribute name | Description |
+|----------------|---------------|
+| visible | boolean attribute determining if before clicking the visibility of the element should be verified, default to true, set explicitly to false to skip this check |
 
 #### open
 
+Opens the given URL also initializing the Selenium WebDriver
+
+| Attribute name | Description |
+|----------------|-------------|
+| url            | URL to open |
+
 #### input
 
+#### maximize
+Maximizes the browser window
+
+### Custom actions
+TODO
 
 
 
