@@ -74,3 +74,9 @@ Between "actions" tags write actions you want to be performed during test launch
 </scenario>
 ```
 
+### Most commonly used core actions
+
+#### Click
+
+
+
