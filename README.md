@@ -77,7 +77,7 @@ Between "actions" tags write actions you want to be performed during test launch
 ### Web Selectors
 Web selectors allow for referencing elements in the webpage content. Isimo uses the following types of selectors. Selectors are expressed as attributes on various web action elements:
 
-| Attribute/Selector name | Description | Example | Example element found |
+| Attribute/Selector name | Description | Example selector usage | Example element found |
 |-------------------------|-------------|---------|-----------------------|
 | id			  | Simple referencing using elements id attribute | ```<click id="somebutton"/>``` | ```<button id="somebutton">``` |
 | CSS                     | Referencing using CSS selectors, see https://www.w3schools.com/cssref/css_selectors.asp for extesive documentation, less powerful than XPath | ```<click css=".someclass"/\>``` | ```<button class="someclass"/>``` |
