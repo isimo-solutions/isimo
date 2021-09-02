@@ -155,9 +155,17 @@ Includes another testcase in the testcase execution
 | Attribute name | Description |
 |----------------|---------------|
 | scenario | Testcase file path without .xml extension |
-| <any attributename> | Any attribute name will be passed to the subscenario, the attributes will be available as properties in the subscenario under the names attr:<attributename>|
+| \<any attributename\> | Any attribute name will be passed to the subscenario, the attributes will be available as properties in the subscenario under the names attr:\<attributename\>|
 
-#### store
+#### robot
+
+Executes automated typing using java.awt.Robot
+
+| Attribute name | Description |
+|----------------|---------------|
+| texttotype | Text to type automatically |
+| sendenter | Click enter after typing, defaults to false|
+| sendtab | Click tab after typing, defaults to false|
 
 ### Most commonly used web actions
 
@@ -170,6 +178,31 @@ Web selectors allow for referencing elements in the webpage content. Isimo uses 
 | CSS                     | Referencing using CSS selectors, see https://www.w3schools.com/cssref/css_selectors.asp for extesive documentation, less powerful than XPath | ```<click css=".someclass"/\>``` | ```<button class="someclass"/>``` |
 | XPath                     | Referencing using XPath expressions, see https://www.w3schools.com/xml/xpath_intro.asp for tutorial | ```<click xpath="//span[id='parent' and button[@class='someclass']]"/>``` | ```<span id="parent"><button class="someclass"/></span>``` |
 
+#### store
+Stores the given value as a property in the current testcase. There are several usage scenarios which are driven by the type attribute. If the type=count, then stored variable will be the number of elements returned by the given selector, for example this will store the number of rows of the given table:
+
+```
+<store type="count" xpath="//table[id='sometable']//tr" variable="numberofrows"/>
+```
+If type=text, then expression provided as text attribute will be stored
+```
+<store type="text" text="sometext" variable="somevariable"/>
+```
+If type is one of id,xpath,css then the respective text content of the selected HTML element will be stored:
+```
+<store type="xpath" xpath="//div[id='somediv']" content="true"/>
+```
+or the attribute value of the selected element will be stored (here, storing the value of the class attribute):
+
+```
+<store type="xpath" xpath="//div[id='somediv']" attribute="class"/>
+```
+
+| Attribute name | Description |
+|----------------|---------------|
+| type | One of 'text','count' or 'id','xpath','css' |
+| variable | Name of the testcase property to store the value|
+| variable | Name of the testcase property to store the value|
 
 #### click
 
@@ -202,7 +235,7 @@ Inputs the given text in the given web input control.
 Maximizes the browser window
 
 ### Custom actions
-TODO
+It's possible to implement own custom actions by extending the AtomicAction abstract class and adding @IsimoAction stereotype. You can follow the examples in the Java code of the standard actions.
 
 
 
