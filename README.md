@@ -146,7 +146,18 @@ The attributes passed to the included scenario can be used in the following way 
 </scenario>
 ```
 
+### Most commonly used core actions
 
+#### include
+
+Includes another testcase in the testcase execution
+
+| Attribute name | Description |
+|----------------|---------------|
+| scenario | Testcase file path without .xml extension |
+| <any attributename> | Any attribute name will be passed to the subscenario, the attributes will be available as properties in the subscenario under the names attr:<attributename>|
+
+#### store
 
 ### Most commonly used web actions
 
@@ -177,6 +188,15 @@ Opens the given URL also initializing the Selenium WebDriver
 | url            | URL to open |
 
 #### input
+
+Inputs the given text in the given web input control.
+
+| Attribute name | Description |
+|----------------|-------------|
+| value          | Value to input |
+| clear | Boolean value determining whether to clear the field before input, defaults to true|
+| tab | Boolean value determining whether to press tab after input, defaults to false|
+
 
 #### maximize
 Maximizes the browser window
