@@ -57,9 +57,12 @@ import com.isimo.core.event.ExecutionListener;
 import com.isimo.core.xml.LocationAwareElement;
 import com.isimo.core.xml.LocationSAXReader;
 import com.isimo.core.xml.LocatorAwareDocumentFactory;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationContext;
+import org.springframework.beans.BeansException;
 
 @Component
-public class TestExecutionManager {
+public class TestExecutionManager implements ApplicationContextAware  {
 	public enum TestStatus {
 		SUCCESS, FAILED, ERROR
 	}
@@ -71,6 +74,7 @@ public class TestExecutionManager {
 	public TestStatus testStatus = TestStatus.SUCCESS;
 	public TestExecution testExecution = TestExecution.ABORTED;
 	
+	private static ApplicationContext context;	
 	
 	Properties properties = new Properties();
 	
@@ -88,6 +92,19 @@ public class TestExecutionManager {
 	LocationSAXReader saxreader;
 	
 	String scenarioName;
+	
+	@Override
+    public void setApplicationContext(ApplicationContext context) throws BeansException {
+		TestExecutionManager.context = context;
+    }
+	
+	public static <T extends Object> T getBean(Class<T> beanClass) {
+        return context.getBean(beanClass);
+    }
+	
+	public static TestExecutionManager getInstance() {
+		return context.getBean(TestExecutionManager.class);
+	}
 	
 	Object evaluateExpression(Action a, Properties props) {
 		JexlExpression expr = expressionEvaluator.jexlEngine.createExpression(a.definition.attributeValue("expression"));
