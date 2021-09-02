@@ -73,9 +73,46 @@ Between "actions" tags write actions you want to be performed during test launch
 	</actions>
 </scenario>
 ```
+### Built-in functions
+It's possible to use the built-in functions in the actions code. The general syntax to be used in the actions is: {function(arg1,...,argN)}.
+
+There are two very common usecases for that: current date/time generation and property expansion, for example the following code will store the current date + 30 days in the   [java.text.SimpleDate format](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html) dd.MM.yyyy:
+```
+<scenario xmlns="http://isimo.com/scenario/1.0" timeout="100000000">
+	<actions>
+		<store variable="current_date" text="{sysdate(30,dd.MM.yyyy)}" type="text"/>
+	</actions>
+</scenario>
+```
+The following will open the url contained in the propery url.to.open:
+
+```
+<scenario xmlns="http://isimo.com/scenario/1.0">
+	<actions>
+		<open url="{property(url.to.open)}"/>
+	</actions>
+</scenario>
+```
+
+The following built-in functions are available currently:
+
+|Function|Parameters|Description|
+|--------|----------|-------|
+|property|property name|outputs the value of the given property|
 
 ### Properties, variables
-TODO
+As an input each testcase receives the set of property values. This initial set is stored as test.properties file in the target subdirectory of the project. The eventual set of properties is calculated using the sequence of property files defined in the framework. The most important property files used in this sequence are config/default.properties and config/env/${env}.properties, where env is an input property passed to the maven project. The properties from the latter file override the values from the config/default.properties. This allows to define all properties on the general level (config/default.properties) and override them depending on the currently used environment. The property values are available from the isimo api. They can also be used in the testcase actions, for example the following code will open the browser and navigate to the url defined by the property url.to.open:
+```
+<scenario xmlns="http://isimo.com/scenario/1.0">
+	<actions>
+		<open url="{property(url.to.open)}"/>
+	</actions>
+</scenario>
+```
+
+### Including testscenarios
+
+
 
 ### Web Selectors
 Web selectors allow for referencing elements in the webpage content. Isimo uses the following types of selectors. Selectors are expressed as attributes on various web action elements:
