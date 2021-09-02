@@ -12,8 +12,8 @@ public class ExpressionPredicate extends Predicate<String> {
 		boolean retval = true;
 		String str = null;
 		if (action.definition.attribute("expression") != null) {
-			Object o = testExecutionManager.evaluateExpression(action);
-			testExecutionManager.log("Condition evaluated to " + o.toString(), action);
+			Object o = TestExecutionManager.getInstance().evaluateExpression(action);
+			TestExecutionManager.getInstance().log("Condition evaluated to " + o.toString(), action);
 			retval = ("true".equals(o.toString()));
 			str = action.definition.attributeValue("expression");
 		}

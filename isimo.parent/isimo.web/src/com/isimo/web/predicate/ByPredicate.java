@@ -31,115 +31,119 @@ public class ByPredicate extends Predicate<Object> {
 
 	@Override
 	public Pair<Boolean, Object> evaluate(Action action) {
-		ExpectedCondition<Pair<Boolean, Object>> cond = null;
-		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), IsimoWebProperties.getInstance().isimo.asserttimeout);
-		wait.pollingEvery(Duration.ofMillis(1000));
 		By by = WebAction.getByNoException(action.getDefinition(), action);
-		if(by != null) {
-			
-			if(action instanceof WebAction)
-				SpringContext.getBean(WebDriverProvider.class).waitForPageLoad();
-			int maxcounter = IsimoWebProperties.getInstance().isimo.maxcounter;
-			String maxcounterstr = action.getDefinition().attributeValue("maxcounter");
-			if(maxcounterstr!=null)
-				maxcounter = Integer.parseInt(maxcounterstr);
-			cond = stableConditionTest(byCondition(action, by), maxcounter, action);
-			action.log("ByPredicate: Cond = "+cond);
-			Pair<Boolean, Object> result = Pair.of(false, null);
-			try {
-				result = wait.until(cond);
-				action.log("ByPredicate: Cond evaluated to true");
-			} catch(TimeoutException e) {
-				throw new RuntimeException(e);
-			}
-			return result;
+		if(by==null)
+			return Pair.of(true, null);
+		ExpectedCondition<Pair<Boolean, Object>> cond = null;
+		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(),
+				IsimoWebProperties.getInstance().isimo.asserttimeout);
+		wait.pollingEvery(Duration.ofMillis(1000));
+		if (action instanceof WebAction)
+			SpringContext.getBean(WebDriverProvider.class).waitForPageLoad();
+		int maxcounter = IsimoWebProperties.getInstance().isimo.maxcounter;
+		String maxcounterstr = action.getDefinition().attributeValue("maxcounter");
+		if (maxcounterstr != null)
+			maxcounter = Integer.parseInt(maxcounterstr);
+		cond = stableConditionTest(byCondition(action, by), maxcounter, action);
+		action.log("ByPredicate: Cond = " + cond);
+		Pair<Boolean, Object> result = Pair.of(false, null);
+		try {
+			result = wait.until(cond);
+			action.log("ByPredicate: Cond evaluated to true");
+		} catch (TimeoutException e) {
+			throw new RuntimeException(e);
 		}
-		return Pair.of(true, null);
+		return result;
+		
 	}
-	
+
 	ByPredicateConditionWrapper byCondition(Action action, By by) {
-		if(action.getDefinition().attribute("positive")!=null && action.getDefinition().attribute("negative")!=null)
+		if (action.getDefinition().attribute("positive") != null
+				&& action.getDefinition().attribute("negative") != null)
 			throw new RuntimeException("Both positive and negative attribute can't be specified in one by predicate!");
 		boolean negative = "true".equals(action.getDefinition().attributeValue("negative"));
-		if(action.getDefinition().attribute("positive")!=null)
+		if (action.getDefinition().attribute("positive") != null)
 			negative = "false".equals(action.getDefinition().attributeValue("positive"));
-		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), IsimoWebProperties.getInstance().isimo.asserttimeout);
+		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(),
+				IsimoWebProperties.getInstance().isimo.asserttimeout);
 		ExpectedCondition cond = ExpectedConditions.presenceOfElementLocated(by);
 		ByPredicateConditionWrapper.ConditionType type = ByPredicateConditionWrapper.ConditionType.SINGLEELEMENT;
-		if(negative) {
-			//cond = ExpectedConditions.numberOfElementsToBe(by, 0);
+		if (negative) {
+			// cond = ExpectedConditions.numberOfElementsToBe(by, 0);
 			type = ByPredicateConditionWrapper.ConditionType.NEGATIVE;
-		}
-		else if("true".equals(action.getDefinition().attributeValue("visible"))) {
+		} else if ("true".equals(action.getDefinition().attributeValue("visible"))) {
 			cond = ExpectedConditions.and(cond, ExpectedConditions.elementToBeClickable(by));
 			type = ByPredicateConditionWrapper.ConditionType.BOOLEAN;
 		}
-		SpringContext.getTestExecutionManager().log("Condition to be evaluated: "+cond, action);
+		SpringContext.getTestExecutionManager().log("Condition to be evaluated: " + cond, action);
 		return new ByPredicateConditionWrapper(cond, type);
 	}
-	
-	static ExpectedCondition<List<WebElement>> isByInSearchContext(By by, By searchContextBy, final boolean negative, final Action action) {
+
+	static ExpectedCondition<List<WebElement>> isByInSearchContext(By by, By searchContextBy, final boolean negative,
+			final Action action) {
 
 		return new ExpectedCondition<List<WebElement>>() {
 			@Override
 			public List<WebElement> apply(WebDriver webdriver) {
 				SearchContext searchContext = WebDriverProvider.getInstance().getWebDriver();
-				if(searchContextBy!=null)
+				if (searchContextBy != null)
 					searchContext = searchContext.findElement(searchContextBy);
 				// TODO Auto-generated method stub
-				action.log("Testing by "+by);
+				action.log("Testing by " + by);
 				List<WebElement> result = searchContext.findElements(by);
-				if(!negative && !result.isEmpty())
+				if (!negative && !result.isEmpty())
 					return result;
-				else if(negative && result.isEmpty())
+				else if (negative && result.isEmpty())
 					return result;
 				else
 					return null;
 			}
 		};
 	}
-	
-	static ExpectedCondition<Pair<Boolean,Object>> stableConditionTest(final ByPredicateConditionWrapper totest, int maxcounter, final Action action) {
-		return new ExpectedCondition<Pair<Boolean,Object>>() {
+
+	static ExpectedCondition<Pair<Boolean, Object>> stableConditionTest(final ByPredicateConditionWrapper totest,
+			int maxcounter, final Action action) {
+		return new ExpectedCondition<Pair<Boolean, Object>>() {
 			Boolean result = false;
 			Object detailresult = null;
 			int counter = 0;
+
 			@Override
-			public Pair<Boolean,Object> apply(WebDriver webdriver) {
+			public Pair<Boolean, Object> apply(WebDriver webdriver) {
 				Object retvalobj = null;
 				try {
 					retvalobj = totest.getCondition().apply(webdriver);
-				} catch(WebDriverException e) {
-					action.log("Exception: "+e.getMessage());
+				} catch (WebDriverException e) {
+					action.log("Exception: " + e.getMessage());
 				}
-				if(ByPredicateConditionWrapper.ConditionType.BOOLEAN.equals(totest.getType())) {
+				if (ByPredicateConditionWrapper.ConditionType.BOOLEAN.equals(totest.getType())) {
 					Boolean ret = (Boolean) retvalobj;
-					Boolean lastretval = (ret!=null)&&ret;
+					Boolean lastretval = (ret != null) && ret;
 					incBoolean(lastretval);
-				} else if(ByPredicateConditionWrapper.ConditionType.LISTTEST.equals(totest.getType())
+				} else if (ByPredicateConditionWrapper.ConditionType.LISTTEST.equals(totest.getType())
 						|| ByPredicateConditionWrapper.ConditionType.NEGATIVE.equals(totest.getType())) {
-					if(retvalobj instanceof WebElement)
+					if (retvalobj instanceof WebElement)
 						incSingleElement((WebElement) retvalobj);
 					else {
 						List<WebElement> list = (List<WebElement>) retvalobj;
 						incList(list);
 					}
-				} else if(ByPredicateConditionWrapper.ConditionType.SINGLEELEMENT.equals(totest.getType())) {
+				} else if (ByPredicateConditionWrapper.ConditionType.SINGLEELEMENT.equals(totest.getType())) {
 					WebElement elem = (WebElement) retvalobj;
 					incSingleElement(elem);
 				}
-				action.log("Counter="+counter+";"+this.toString());
-				if(counter >= maxcounter) {
-					if(ByPredicateConditionWrapper.ConditionType.NEGATIVE.equals(totest.getType()))
+				action.log("Counter=" + counter + ";" + this.toString());
+				if (counter >= maxcounter) {
+					if (ByPredicateConditionWrapper.ConditionType.NEGATIVE.equals(totest.getType()))
 						result = !result;
 					action.log("Result:  " + result + " Detailed: " + detailresult);
 					return Pair.of(result, detailresult);
 				} else
 					return null;
 			}
-				
+
 			public void incBoolean(Boolean val) {
-				if(val.equals(detailresult)) {
+				if (val.equals(detailresult)) {
 					counter++;
 				} else {
 					result = val;
@@ -147,56 +151,58 @@ public class ByPredicate extends Predicate<Object> {
 					counter = 0;
 				}
 			}
-			
+
 			void incList(List<WebElement> val) {
 				List<WebElement> listdetailresult = (List<WebElement>) detailresult;
-				if(val==null && listdetailresult==null) {
+				if (val == null && listdetailresult == null) {
 					action.log("List is empty");
 					counter++;
-				} else if((val != null && detailresult != null) && listdetailresult.size() == val.size()){
-					action.log("List has "+val.size()+" elements");
+				} else if ((val != null && detailresult != null) && listdetailresult.size() == val.size()) {
+					action.log("List has " + val.size() + " elements");
 					counter++;
 				} else {
-					result = (val!=null) && !val.isEmpty();
+					result = (val != null) && !val.isEmpty();
 					detailresult = val;
 					counter = 0;
 				}
 			}
-			
+
 			void incSingleElement(WebElement val) {
-				if((val==null && detailresult==null) || (val!=null && detailresult!=null)) {
+				if ((val == null && detailresult == null) || (val != null && detailresult != null)) {
 					counter++;
 				} else {
-					result = (val!=null);
+					result = (val != null);
 					counter = 0;
 					detailresult = val;
 				}
 			}
 		};
 	}
-	
+
 	static boolean listsSizeEqual(List l1, List l2) {
-		if(l1 == null && l2 ==null)
+		if (l1 == null && l2 == null)
 			return true;
-		if((l1 != null && l2 == null) || (l1 == null && l2 != null))
+		if ((l1 != null && l2 == null) || (l1 == null && l2 != null))
 			return false;
 		return l1.size() == l2.size();
 	}
-	
-	
 
-	public static Pair<Boolean, List<WebElement>> testIfByPresent(By by, By searchContextBy, boolean negative, int mcount, Action a) {		
+	public static Pair<Boolean, List<WebElement>> testIfByPresent(By by, By searchContextBy, boolean negative,
+			int mcount, Action a) {
 		try {
-			WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), IsimoWebProperties.getInstance().isimo.shorttimeout);
-			ExpectedCondition<Pair<Boolean, Object>> testIfByPresentStable= stableConditionTest(new ByPredicateConditionWrapper(isByInSearchContext(by, searchContextBy, negative, a), ByPredicateConditionWrapper.ConditionType.LISTTEST), mcount, a);
+			WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(),
+					IsimoWebProperties.getInstance().isimo.shorttimeout);
+			ExpectedCondition<Pair<Boolean, Object>> testIfByPresentStable = stableConditionTest(
+					new ByPredicateConditionWrapper(isByInSearchContext(by, searchContextBy, negative, a),
+							ByPredicateConditionWrapper.ConditionType.LISTTEST),
+					mcount, a);
 			Pair<Boolean, Object> waitresult = wait.until(testIfByPresentStable);
-			return Pair.of(waitresult.getLeft(), (List<WebElement>)waitresult.getRight());
-		} catch(WebDriverException e) {
+			return Pair.of(waitresult.getLeft(), (List<WebElement>) waitresult.getRight());
+		} catch (WebDriverException e) {
 			throw e;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
-		}		
+		}
 	}
-		
 
 }
