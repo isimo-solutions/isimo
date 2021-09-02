@@ -201,8 +201,11 @@ or the attribute value of the selected element will be stored (here, storing the
 | Attribute name | Description |
 |----------------|---------------|
 | type | One of 'text','count' or 'id','xpath','css' |
-| variable | Name of the testcase property to store the value|
-| variable | Name of the testcase property to store the value|
+| variable | Name of the testcase property to store the value |
+| attribute | Name of the HTMLE attribute, the value of which should be stored |
+| content |  boolean, if set to true, the text content of the found HTML element will be stored |
+| urlencode | boolean, if set to true, the value will be urlencoded before storing |
+| <selector> | One of the web selectors used to reference the element |
 
 #### click
 
