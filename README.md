@@ -98,7 +98,13 @@ The following built-in functions are available currently:
 
 |Function|Parameters|Description|
 |--------|----------|-------|
-|property|property name|outputs the value of the given property|
+|property|property name|returns the value of the given property|
+|sysdate|first parameter - number of days to add to the current date (can be negative), second, optional is the outputpattern, default output pattern is dd.MM.yyyy|returns the date in the given pattern|
+|systime|first parameter - number of minues to add to the current date/time (can be negative)|same as sysdate but the parameter value passes the number of minutes|
+|absolutepath|relative resource file path|returns absolute path to the return file - this function is useful for file dialog interactions with robot action|
+|randominteger|max integer|returns random integer from the interval 0...max integer|
+|urlencode|String to urlencode|Url encoded value of the input string|
+|randomstring|Length of the random string|Random string of a given length|
 
 ### Properties, variables
 As an input each testcase receives the set of property values. This initial set is stored as test.properties file in the target subdirectory of the project. The eventual set of properties is calculated using the sequence of property files defined in the framework. The most important property files used in this sequence are config/default.properties and config/env/${env}.properties, where env is an input property passed to the maven project. The properties from the latter file override the values from the config/default.properties. This allows to define all properties on the general level (config/default.properties) and override them depending on the currently used environment. The property values are available from the isimo api. They can also be used in the testcase actions, for example the following code will open the browser and navigate to the url defined by the property url.to.open:
@@ -111,7 +117,30 @@ As an input each testcase receives the set of property values. This initial set 
 ```
 
 ### Including testscenarios
-
+Special action include allows to include other testcases in the execution of a given testcase, for example the following scenario will execute the included scenario include/login.xml:
+```
+<scenario xmlns="http://isimo.com/scenario/1.0">
+	<actions>
+		<include scenario="include/login"/>
+	</actions>
+</scenario>
+```
+The included scenarios may be parameterized, for example:
+```
+<scenario xmlns="http://isimo.com/scenario/1.0">
+	<actions>
+		<include scenario="include/login" username="someuser" password="somepassword"/>
+	</actions>
+</scenario>
+```
+The attributes passed to the included scenario can be used in the following way (example contents of the include/login.xml):
+```
+<scenario xmlns="http://isimo.com/scenario/1.0">
+	<actions>
+		<include scenario="include/login" username="someuser" password="somepassword"/>
+	</actions>
+</scenario>
+```
 
 
 ### Web Selectors
