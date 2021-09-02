@@ -17,7 +17,8 @@ public class Closebrowser extends WebAction {
 	public void executeAtomic() throws Exception {
 		super.executeAtomic();
 		log("Closing browser");
-		getDriver().quit();
+		getDriver().close();
+		WebDriverProvider.getInstance().setWebDriver(null);
 	}
 
 }

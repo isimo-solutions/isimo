@@ -135,15 +135,22 @@ The included scenarios may be parameterized, for example:
 ```
 The attributes passed to the included scenario can be used in the following way (example contents of the include/login.xml):
 ```
-<scenario xmlns="http://isimo.com/scenario/1.0">
+<scenario xmlns="http://isimo.com/scenario/1.0" timeout="100000000">
 	<actions>
-		<include scenario="include/login" username="someuser" password="somepassword"/>
+		<open url="http://some.url"/>
+		<input css="input[id='username']" value="{property(attr:username)}"/>
+		<input css="input[id='password']" value="{property(attr:password)}"/>
+		<click css="button.login-btn"/>
+		<maximize/>
 	</actions>
 </scenario>
 ```
 
 
-### Web Selectors
+
+### Most commonly used web actions
+
+#### Web Selectors
 Web selectors allow for referencing elements in the webpage content. Isimo uses the following types of selectors. Selectors are expressed as attributes on various web action elements:
 
 | Attribute/Selector name | Description | Example selector usage | Example element found |
@@ -152,7 +159,6 @@ Web selectors allow for referencing elements in the webpage content. Isimo uses 
 | CSS                     | Referencing using CSS selectors, see https://www.w3schools.com/cssref/css_selectors.asp for extesive documentation, less powerful than XPath | ```<click css=".someclass"/\>``` | ```<button class="someclass"/>``` |
 | XPath                     | Referencing using XPath expressions, see https://www.w3schools.com/xml/xpath_intro.asp for tutorial | ```<click xpath="//span[id='parent' and button[@class='someclass']]"/>``` | ```<span id="parent"><button class="someclass"/></span>``` |
 
-### Most commonly used web actions
 
 #### click
 
