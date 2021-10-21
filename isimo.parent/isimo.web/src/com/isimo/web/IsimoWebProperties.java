@@ -165,9 +165,20 @@ public class IsimoWebProperties {
 	public static class Webdriver {
 		Ie ie = new Ie();
 		Gecko gecko = new Gecko();
+		Edge edge = new Edge();
 		
 		
 		
+		
+		
+		public Edge getEdge() {
+			return edge;
+		}
+
+		public void setEdge(Edge edge) {
+			this.edge = edge;
+		}
+
 		public Ie getIe() {
 			return ie;
 		}
@@ -256,6 +267,19 @@ public class IsimoWebProperties {
 			}
 			
 			
+			
+		}
+		
+		public static class Edge {
+			public String driver;
+
+			public String getDriver() {
+				return driver;
+			}
+
+			public void setDriver(String driver) {
+				this.driver = driver;
+			}
 			
 		}
 	}

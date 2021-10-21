@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -138,6 +139,10 @@ public class Open extends WebAction {
 					options.setBinary(isimoWebProperties.webdriver.chrome.binary);
 				ChromeDriver chromedriver = new ChromeDriver(options);
 				driver = chromedriver;
+			} else if("edge".equals(isimoWebProperties.isimo.browser)) {
+				System.setProperty("webdriver.edge.driver", isimoWebProperties.webdriver.edge.driver);
+				EdgeDriver edgedriver = new EdgeDriver();
+				driver = edgedriver;
 			} else {
 				throw new RuntimeException("Browser not supported: "+getProperties().get("browser.type"));
 			}
