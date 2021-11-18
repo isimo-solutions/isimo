@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.dom4j.Element;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -545,7 +546,11 @@ public abstract class WebAction extends AtomicAction {
 				
 				input = waitForElementSequential(WebDriverProvider.getInstance().getWebDriver(),by);	
 				log("Wait for element to be clickable completed");
-				input.click();
+				try {
+					input.click();
+				} catch(ElementClickInterceptedException e) {
+					log("Exception caught: "+e);
+				}
 				
 				while(true) {
 					try {
