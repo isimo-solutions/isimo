@@ -191,6 +191,9 @@
 			<arg line="/F /IM chromedriver.exe /T" />
 		</exec>
 		<exec command="taskkill">
+			<arg line="/F /IM msedgedriver.exe /T" />
+		</exec>
+		<exec command="taskkill">
 			<arg line="/F /FI &quot;IMAGENAME eq IEDriverServer*&quot; /T" />
 		</exec>
 		<exec command="taskkill">
