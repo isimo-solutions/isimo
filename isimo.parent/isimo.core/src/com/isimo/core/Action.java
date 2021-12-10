@@ -159,6 +159,7 @@ public abstract class Action {
 			throw new RuntimeException(e);
 		}
 		execute();
+		testExecutionManager.executionController.setCurrentAction(this);
 		testExecutionManager.executionController.stopAction();
 	}
 
