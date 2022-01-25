@@ -84,7 +84,7 @@
 				<runtarget target="singlemoduletest"/>
 			</sequential>
 		</for>
-		<runtarget target="testManyScenarios"/>
+		<!--<runtarget target="testManyScenarios"/>-->
 	</target>
 	
 	<target name="singlemoduletest">

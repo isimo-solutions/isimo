@@ -2,14 +2,22 @@ package com.isimo.core;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import com.isimo.core.annotations.IsimoAction;
 import com.isimo.core.xml.LocationAwareElement;
@@ -45,13 +53,27 @@ public class Get extends AtomicAction {
 	}
 
 	void sendRequest() {
-		try {
-			DefaultHttpClient httpClient = new DefaultHttpClient();	
+		try {    
+			System.out.println("preauth: "+"true".equals(definition.attributeValue("preauth")));
+			log("test preauth: "+"true".equals(definition.attributeValue("preauth")));
+			HttpParams httpParams = new BasicHttpParams();
+			if(definition.attributeValue("timeout") != null) {
+				HttpConnectionParams.setSoTimeout(httpParams, new Integer(definition.attributeValue("timeout")));
+			}
+			DefaultHttpClient httpClient = new DefaultHttpClient(httpParams);	
 			HttpUriRequest request = new HttpGet(definition.attributeValue("url"));
+			
 			if(definition.attributeValue("username") != null) {
-				httpClient.getCredentialsProvider().setCredentials(
-	                    AuthScope.ANY,
-	                    new UsernamePasswordCredentials(definition.attributeValue("username"), definition.attributeValue("password")));
+				UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(definition.attributeValue("username"), definition.attributeValue("password"));
+				if("true".equals(definition.attributeValue("preauth"))) {
+					Header autHeader = new BasicScheme(StandardCharsets.UTF_8).authenticate(credentials, request);
+					request.addHeader(autHeader);
+					System.out.println(autHeader.toString());
+				}else {
+					CredentialsProvider credsProvider = new BasicCredentialsProvider();
+					credsProvider.setCredentials(AuthScope.ANY, credentials);
+					httpClient.setCredentialsProvider(credsProvider);
+				}
 			}
 			HttpResponse resp = httpClient.execute(request);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();

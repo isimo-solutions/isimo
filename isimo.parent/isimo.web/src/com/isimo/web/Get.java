@@ -2,14 +2,22 @@ package com.isimo.web;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import com.isimo.core.Action;
 import com.isimo.core.AtomicAction;
@@ -47,13 +55,19 @@ public class Get extends AtomicAction {
 	}
 
 	void sendRequest() {
-		try {
+		try {    
 			DefaultHttpClient httpClient = new DefaultHttpClient();	
 			HttpUriRequest request = new HttpGet(getDefinition().attributeValue("url"));
 			if(getDefinition().attributeValue("username") != null) {
-				httpClient.getCredentialsProvider().setCredentials(
-	                    AuthScope.ANY,
-	                    new UsernamePasswordCredentials(getDefinition().attributeValue("username"), getDefinition().attributeValue("password")));
+				UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(getDefinition().attributeValue("username"), getDefinition().attributeValue("password"));
+				if("true".equals(getDefinition().attributeValue("preauth"))) {
+					Header autHeader = new BasicScheme(StandardCharsets.UTF_8).authenticate(credentials, request);
+					request.addHeader(autHeader);
+				}else {
+					CredentialsProvider credsProvider = new BasicCredentialsProvider();
+					credsProvider.setCredentials(AuthScope.ANY, credentials);
+					httpClient.setCredentialsProvider(credsProvider);
+				}
 			}
 			HttpResponse resp = httpClient.execute(request);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();

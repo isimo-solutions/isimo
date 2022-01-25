@@ -603,6 +603,7 @@ public abstract class WebAction extends AtomicAction {
 					List<WebElement> activeTab = WebDriverProvider.getInstance().getWebDriver().findElements(By.xpath("//bm-tabs/ul/li[contains(@class,'state-active')]/a"));
 					if(!activeTab.isEmpty())
 						getLog().addAttribute("log_tab", activeTab.get(0).getText());
+					//WebDriverProvider.getInstance().getJavascriptExecutor().executeScript("window.scrollTo(0, 0);");
 					break;
 				} catch(WebDriverException e) {
 					log("!!Warn: " + e.getMessage(),null);

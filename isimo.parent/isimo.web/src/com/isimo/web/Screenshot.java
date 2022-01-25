@@ -27,7 +27,7 @@ public class Screenshot extends WebAction {
 		if(driver!=null) {
 			File scrFile = driver.getScreenshotAs(OutputType.FILE);
 			try {
-				FileUtils.copyFile(scrFile, new File(testExecutionManager.getReportDir()+File.separator+getDefinition().attributeValue("file")));
+				FileUtils.copyFile(scrFile, new File(testExecutionManager.getScreenshotsReportDir()+File.separator+getDefinition().attributeValue("file")));
 			} catch(Exception e) {
 				throw new RuntimeException(e);
 			}

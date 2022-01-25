@@ -356,18 +356,18 @@ public class TestExecutionManager implements ApplicationContextAware  {
 		}
 	}
 	
-	
-	
-	public File getReportDir(String scenarioName) {
+	public File getReportDir() {
 		String reportDir = scenarioName.replaceAll("/", "_");
 		File reportDirFile = new File(reportDir);
-		
+
 		reportDirFile.mkdirs();
 		return reportDirFile;
 	}
 	
-	public File getReportDir() {
-		return getReportDir(scenarioName);
+	public File getScreenshotsReportDir() {
+		File screenshotsReportDirFile = new File("screenshots");
+		screenshotsReportDirFile.mkdirs();
+		return screenshotsReportDirFile;
 	}
 
 	public void runAtomicAction(Action parent, final AtomicAction currentAction, int timeoutInSeconds) throws Exception {
@@ -488,7 +488,7 @@ public class TestExecutionManager implements ApplicationContextAware  {
 				currentattrs.put(name, attrElem.attributeValue("default"));
 		}
 		if(tagsElem.elements().size() != 0)
-			FileUtils.write(new File(getReportDir(scenarioName)+File.separator+"tags_include.xml"), tagsElem.asXML(), "UTF-8");
+			FileUtils.write(new File(getReportDir()+File.separator+"tags_include.xml"), tagsElem.asXML(), "UTF-8");
 		List<Element> actions = doc.getRootElement().element("actions").elements();
 		executeList(actions, parent);
 		executionController.stopScenario(scenarioName);		
