@@ -84,7 +84,6 @@
 				<runtarget target="singlemoduletest"/>
 			</sequential>
 		</for>
-		<!--<runtarget target="testManyScenarios"/>-->
 	</target>
 	
 	<target name="singlemoduletest">
@@ -191,9 +190,6 @@
 			<arg line="/F /IM chromedriver.exe /T" />
 		</exec>
 		<exec command="taskkill">
-			<arg line="/F /IM msedgedriver.exe /T" />
-		</exec>
-		<exec command="taskkill">
 			<arg line="/F /FI &quot;IMAGENAME eq IEDriverServer*&quot; /T" />
 		</exec>
 		<exec command="taskkill">
@@ -201,6 +197,9 @@
 		</exec>
 		<exec command="taskkill">
 			<arg line="/F /FI &quot;IMAGENAME eq geckodriver*&quot; /T" />
+		</exec>
+		<exec command="taskkill">
+			<arg line="/F /FI &quot;IMAGENAME eq msedgedriver*&quot; /T" />
 		</exec>
 		<var name="timeout" value="360000000" />
 		<xmltask source="${com.isimo.scenarios}/${module}/${scenario}.xml">
