@@ -2,6 +2,7 @@ package com.isimo.web;
 
 import java.io.FileInputStream;
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -73,7 +74,7 @@ public abstract class WebAction extends AtomicAction {
 			sc = WebDriverProvider.getInstance().getWebDriver();
 		else
 			sc = ctx;
-		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), isimoWebProperties.isimo.shorttimeout);
+		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), Duration.ofSeconds(isimoWebProperties.isimo.shorttimeout));
 		webDriverProvider.waitForPageLoad();
 		if (visible) {
 			log("Checking if element " + by.toString() + " is available");
@@ -89,7 +90,7 @@ public abstract class WebAction extends AtomicAction {
 				throw new RuntimeException("None of the found elements has become visible");
 			}
 		} else {
-			WebDriverWait wait2 = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), isimoWebProperties.isimo.shorttimeout);
+			WebDriverWait wait2 = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), Duration.ofSeconds(isimoWebProperties.isimo.shorttimeout));
 			log("Waiting for invisibility of by: " + by);
 			wait2.until(invisibilityOf(by));
 			log("OK, element " + by.toString() + " is not visible");
@@ -144,7 +145,7 @@ public abstract class WebAction extends AtomicAction {
 			}
 			
 		};
-		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), isimoWebProperties.isimo.shorttimeout);
+		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), Duration.ofSeconds(isimoWebProperties.isimo.shorttimeout));
 		wait.until(elementPresent);
 		try {
 			Method m = elementPresent.getClass().getMethod("getRetval");
@@ -407,7 +408,7 @@ public abstract class WebAction extends AtomicAction {
 			}
 		};
 		
-		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), isimoWebProperties.isimo.shorttimeout);
+		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), Duration.ofSeconds(isimoWebProperties.isimo.shorttimeout));
 		wait.until(elementVisible);
 		try {
 			Method m = elementVisible.getClass().getMethod("getRetval");
@@ -431,7 +432,7 @@ public abstract class WebAction extends AtomicAction {
 	 */
 	public org.openqa.selenium.support.ui.Select select(By by, String option, String type) {
 		webDriverProvider.waitForPageLoad();
-		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), isimoWebProperties.isimo.shorttimeout);
+		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), Duration.ofSeconds(isimoWebProperties.isimo.shorttimeout));
 		if (!Select.VISIBLE_TEXT.equals(type) && !Select.VALUE.equals(type) && !Select.INDEX.equals(type)) {
 			throw new RuntimeException("Select type unknown");
 		}
@@ -468,7 +469,7 @@ public abstract class WebAction extends AtomicAction {
 	
 
 	public void clickTabOnBy(By by) throws Exception {
-		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), isimoWebProperties.isimo.shorttimeout);
+		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), Duration.ofSeconds(isimoWebProperties.isimo.shorttimeout));
 		MutableObject<Exception> hex = new MutableObject<Exception>();
 		Function<WebDriver, Boolean> clicked = new Function<WebDriver, Boolean>() {
 			@Override
@@ -536,7 +537,7 @@ public abstract class WebAction extends AtomicAction {
 		for (int i = 0; i < isimoWebProperties.isimo.retrycount; i++) {
 			try {
 				WebElement input = verifyVisible(by);
-				WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), isimoWebProperties.isimo.shorttimeout);
+				WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), Duration.ofSeconds(isimoWebProperties.isimo.shorttimeout));
 				if (clear) {
 					input.click();
 					input.clear();

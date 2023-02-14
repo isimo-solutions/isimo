@@ -1,6 +1,8 @@
 package com.isimo.web;
 
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -33,7 +35,7 @@ public class Click extends WebAction {
 					Function f = negative()?
 							invisibilityOf(By.xpath(getDefinition().attributeValue("until"))):
 							ExpectedConditions.visibilityOfElementLocated(By.xpath(getDefinition().attributeValue("until")));
-					(new WebDriverWait(getDriver(), 1)).until(f);
+					(new WebDriverWait(getDriver(), Duration.ofSeconds(1))).until(f);
 					log("until path "+getDefinition().attributeValue("until")+" found");
 					return;
 				} catch (Exception e) {

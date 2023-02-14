@@ -1,6 +1,7 @@
 package com.isimo.web;
 
 import java.io.FileInputStream;
+import java.time.Duration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,7 +44,7 @@ public class WebDriverProvider {
 	}
 	
 	public WebDriverWait shortDriverWait() {
-		WebDriverWait shortWait = new WebDriverWait(getWebDriver(), isimoWebProperties.isimo.shorttimeout);
+		WebDriverWait shortWait = new WebDriverWait(getWebDriver(), Duration.ofSeconds(isimoWebProperties.isimo.shorttimeout));
 		return shortWait;
 	}
 	
@@ -52,14 +53,14 @@ public class WebDriverProvider {
 		boolean ok = false;
 		if(WebDriverProvider.getInstance().getWebDriver() == null)
 			return;
-		while(!ok) {
+		/*while(!ok) {
 			html1 = getPageSource();
 			html2 = getPageSource();
 			ok = html1.equals(html2);
 			if(!ok)
 				testExecutionManager.log("Two page sources not equal", null);
-		}
-		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), isimoWebProperties.isimo.shorttimeout);
+		}*/
+		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), Duration.ofSeconds(isimoWebProperties.isimo.shorttimeout));
 		Function<WebDriver, Boolean> pageLoaded = new Function<WebDriver, Boolean>() {
 			@Override
 			public Boolean apply(WebDriver input) {

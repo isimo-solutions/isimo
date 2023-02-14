@@ -1,5 +1,7 @@
 package com.isimo.web;
 
+import java.time.Duration;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -20,7 +22,7 @@ public class Windows extends WebAction {
 	@Override
 	public void executeAtomic() throws Exception {
 		super.executeAtomic();
-		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), isimoWebProperties.isimo.shorttimeout);
+		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), Duration.ofSeconds(isimoWebProperties.isimo.shorttimeout));
 
 		
 		if(getDefinition().attribute("waitforcount")!=null) {

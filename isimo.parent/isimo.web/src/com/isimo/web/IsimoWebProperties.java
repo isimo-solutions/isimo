@@ -272,6 +272,7 @@ public class IsimoWebProperties {
 		
 		public static class Edge {
 			public String driver;
+			public Boolean headless = Boolean.FALSE;
 
 			public String getDriver() {
 				return driver;
@@ -280,6 +281,15 @@ public class IsimoWebProperties {
 			public void setDriver(String driver) {
 				this.driver = driver;
 			}
+
+			public Boolean getHeadless() {
+				return headless;
+			}
+
+			public void setHeadless(Boolean headless) {
+				this.headless = headless;
+			}
+			
 			
 		}
 	}

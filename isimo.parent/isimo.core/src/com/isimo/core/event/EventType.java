@@ -17,6 +17,7 @@ public class EventType {
 	public transient static EventType Error = new EventType("Error");
 	public transient static EventType Terminated = new EventType("Terminated");
 	public transient static EventType Finished = new EventType("Finished");
+	public transient static EventType Comment = new EventType("Comment");
 	
 	
 	private EventType(String name) {

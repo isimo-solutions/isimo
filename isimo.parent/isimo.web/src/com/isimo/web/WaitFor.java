@@ -1,5 +1,7 @@
 package com.isimo.web;
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -22,13 +24,13 @@ public class WaitFor extends WebAction {
 	public void executeAtomic() throws Exception {
 		super.executeAtomic();
 		if(getDefinition().attribute("title")!=null){
-			new WebDriverWait(getDriver(), isimoWebProperties.isimo.shorttimeout).until(new ExpectedCondition<Boolean>() {
+			new WebDriverWait(getDriver(), Duration.ofSeconds(isimoWebProperties.isimo.shorttimeout)).until(new ExpectedCondition<Boolean>() {
 				public Boolean apply(WebDriver pDriver) {
 					return pDriver.getTitle().equals(getDefinition().attributeValue("title"));
 				}
 			});
 		} else if(getDefinition().attribute("count")!=null){
-			new WebDriverWait(getDriver(), isimoWebProperties.isimo.shorttimeout).until(new ExpectedCondition<Boolean>() {
+			new WebDriverWait(getDriver(), Duration.ofSeconds(isimoWebProperties.isimo.shorttimeout)).until(new ExpectedCondition<Boolean>() {
 				public Boolean apply(WebDriver pDriver) {
 					int actualcount = pDriver.findElements(By.xpath(getDefinition().attributeValue("xpath"))).size();
 					log("Actual count="+actualcount+", excpected count="+getDefinition().attributeValue("count"));

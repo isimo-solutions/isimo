@@ -1,6 +1,8 @@
 package com.isimo.web;
 
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -49,7 +51,7 @@ public class DragAndDrop extends WebAction {
 			//html5_DragAndDrop(driver, source, target, Position.Center, Position.Center);
 			if(getDefinition().attributeValue("until")!=null) {
 				try {
-					WebDriverWait wait = new WebDriverWait(getDriver(), 3);
+					WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
 					wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(getDefinition().attributeValue("until"))));
 				} catch(Exception e) {
 					repeat = true;

@@ -32,7 +32,7 @@ public class If extends CompoundAction {
 		previousparent = testExecutionManager.currentParent; 
 		testExecutionManager.currentParent = changedparent;
 		if(toexecute!=null)
-			testExecutionManager.executeList(toexecute.elements(), this);
+			testExecutionManager.executeList(TestExecutionManager.getSubnodes(toexecute), this);
 		testExecutionManager.currentParent = previousparent;
 	}
 	

@@ -51,6 +51,10 @@ public class Event extends Message {
 		return Event.event(EventType.StopScenario, null, "scenarioName", scenarioName);
 	}
 	
+	public static Event comment(String comment) {
+		return Event.event(EventType.Comment, null, "comment", comment);
+	}
+	
 	public static Event startAction(Action action) {
 		return Event.event(EventType.StartAction, action, "actionName", action.getDefinitionOrig().getName());
 	}

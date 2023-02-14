@@ -19,7 +19,7 @@ public class While extends CompoundAction {
 			maxiterations = Integer.parseInt(maxiterationsStr);
 		int i = 0;
 		while(evaluate().getLeft()) {
-			testExecutionManager.executeList(definition.elements(), this);
+			testExecutionManager.executeList(TestExecutionManager.getSubnodes(definition), this);
 			super.execute();
 			if(i++ > maxiterations)
 				throw new RuntimeException("Maxiterations exeeded "+i);

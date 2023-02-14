@@ -474,6 +474,7 @@ public abstract class Action {
 		long duration = finish.toEpochMilli() - start.toEpochMilli();
 		durationSeconds = (float) ((double) duration / (double) 1000);
 		this.log.addAttribute("duration", durationFormat.format(durationSeconds));
+		this.log.addAttribute("start", start.toString());
 		return durationSeconds;
 	}
 

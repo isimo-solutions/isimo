@@ -1,5 +1,7 @@
 package com.isimo.web.predicate;
 
+import java.time.Duration;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.By;
@@ -25,7 +27,7 @@ public class TitlePredicate extends Predicate<String> {
 		if(title != null) {
 			action.log("TitlePredicate: expected title should be "+title);
 			try {
-				WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), IsimoWebProperties.getInstance().isimo.asserttimeout);
+				WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), Duration.ofSeconds(IsimoWebProperties.getInstance().isimo.asserttimeout));
 				wait.until(ExpectedConditions.titleIs(action.getDefinition().attributeValue("title")));
 				action.log("TitlePredicate: evaluated to true");
 				return Pair.of(true, title);
@@ -37,7 +39,7 @@ public class TitlePredicate extends Predicate<String> {
 		String titlenotempty = action.getDefinition().attributeValue("titlenotempty");
 		if("true".equals(titlenotempty)) {
 			try {
-				WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), IsimoWebProperties.getInstance().isimo.asserttimeout);
+				WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(), Duration.ofSeconds(IsimoWebProperties.getInstance().isimo.asserttimeout));
 				wait.until(titleIsNotEmpty());
 				action.log("TitlePredicate: evaluated to true");
 				return Pair.of(true, "<notempty>");

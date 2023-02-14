@@ -1,5 +1,7 @@
 package com.isimo.web;
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,7 +19,7 @@ public class AssertText extends WebAction {
 
 	public void executeAtomic() throws Exception {
 		try {
-			(new WebDriverWait(getDriver(), IsimoWebProperties.getInstance().isimo.shorttimeout)).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(.,'"+getDefinition().attributeValue("pattern")+"')]")));
+			(new WebDriverWait(getDriver(), Duration.ofSeconds(IsimoWebProperties.getInstance().isimo.shorttimeout))).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(.,'"+getDefinition().attributeValue("pattern")+"')]")));
 			log(" AssertText checking was successful!!  ");
 		} catch(Exception e) {
 			logProblem("xpath="+getDefinition().attributeValue("pattern"));

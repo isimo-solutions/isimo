@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -109,7 +110,7 @@ public class Open extends WebAction {
 				driver = fd;
 	
 			} else if("internetExplorer".equals(isimoWebProperties.isimo.browser)) {
-				DesiredCapabilities caps = DesiredCapabilities.internetExplorer();
+				/*DesiredCapabilities caps = DesiredCapabilities..internetExplorer();
 	
 				caps.setCapability("nativeEvents", Boolean.parseBoolean(getProperties().getProperty("webdriver.ie.nativeevents")));
 				//caps.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
@@ -131,7 +132,7 @@ public class Open extends WebAction {
 				    Runtime.getRuntime().exec(cmd1);
 				} catch (Exception e) {
 				    throw new RuntimeException("Coulnd't change the registry for default directory for IE");
-				}
+				}*/
 			} else if("chrome".equals(isimoWebProperties.isimo.browser)) {
 				System.setProperty("webdriver.chrome.driver", isimoWebProperties.webdriver.chrome.driver);
 				ChromeOptions options = new ChromeOptions();
@@ -141,7 +142,11 @@ public class Open extends WebAction {
 				driver = chromedriver;
 			} else if("edge".equals(isimoWebProperties.isimo.browser)) {
 				System.setProperty("webdriver.edge.driver", isimoWebProperties.webdriver.edge.driver);
-				EdgeDriver edgedriver = new EdgeDriver();
+				
+				EdgeOptions options = new EdgeOptions();
+				//if(isimoWebProperties.webdriver.edge.headless)
+					options.addArguments("--headless=new");
+					EdgeDriver edgedriver = new EdgeDriver(options);
 				driver = edgedriver;
 			} else {
 				throw new RuntimeException("Browser not supported: "+getProperties().get("browser.type"));

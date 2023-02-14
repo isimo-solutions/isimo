@@ -2,6 +2,7 @@ package com.isimo.web.predicate;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -36,7 +37,7 @@ public class ByPredicate extends Predicate<Object> {
 			return Pair.of(true, null);
 		ExpectedCondition<Pair<Boolean, Object>> cond = null;
 		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(),
-				IsimoWebProperties.getInstance().isimo.asserttimeout);
+				Duration.ofSeconds(IsimoWebProperties.getInstance().isimo.asserttimeout));
 		wait.pollingEvery(Duration.ofMillis(1000));
 		if (action instanceof WebAction)
 			SpringContext.getBean(WebDriverProvider.class).waitForPageLoad();
@@ -51,7 +52,8 @@ public class ByPredicate extends Predicate<Object> {
 			result = wait.until(cond);
 			action.log("ByPredicate: Cond evaluated to true");
 		} catch (TimeoutException e) {
-			throw new RuntimeException(e);
+			action.log("ByPredicate: Timeout, cond evaluated to false");
+			//throw new RuntimeException(e);
 		}
 		return result;
 		
@@ -65,7 +67,7 @@ public class ByPredicate extends Predicate<Object> {
 		if (action.getDefinition().attribute("positive") != null)
 			negative = "false".equals(action.getDefinition().attributeValue("positive"));
 		WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(),
-				IsimoWebProperties.getInstance().isimo.asserttimeout);
+				Duration.ofSeconds(IsimoWebProperties.getInstance().isimo.asserttimeout));
 		ExpectedCondition cond = ExpectedConditions.presenceOfElementLocated(by);
 		ByPredicateConditionWrapper.ConditionType type = ByPredicateConditionWrapper.ConditionType.SINGLEELEMENT;
 		if (negative) {
@@ -153,7 +155,13 @@ public class ByPredicate extends Predicate<Object> {
 			}
 
 			void incList(List<WebElement> val) {
-				List<WebElement> listdetailresult = (List<WebElement>) detailresult;
+				List<WebElement> listdetailresult;
+				if(detailresult instanceof WebElement) {
+					listdetailresult = new ArrayList<WebElement>();
+					listdetailresult.add((WebElement)detailresult);
+				} else {
+					listdetailresult = (List<WebElement>) detailresult;
+				}
 				if (val == null && listdetailresult == null) {
 					action.log("List is empty");
 					counter++;
@@ -191,7 +199,7 @@ public class ByPredicate extends Predicate<Object> {
 			int mcount, Action a) {
 		try {
 			WebDriverWait wait = new WebDriverWait(WebDriverProvider.getInstance().getWebDriver(),
-					IsimoWebProperties.getInstance().isimo.shorttimeout);
+					Duration.ofSeconds(IsimoWebProperties.getInstance().isimo.shorttimeout));
 			ExpectedCondition<Pair<Boolean, Object>> testIfByPresentStable = stableConditionTest(
 					new ByPredicateConditionWrapper(isByInSearchContext(by, searchContextBy, negative, a),
 							ByPredicateConditionWrapper.ConditionType.LISTTEST),

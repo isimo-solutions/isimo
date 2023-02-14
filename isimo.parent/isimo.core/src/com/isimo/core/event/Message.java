@@ -14,7 +14,8 @@ public class Message {
 			throw new RuntimeException("Number of parameters must be even!");
 		int i = 0;
 		while(i*2 < metadataValues.length) {
-			metadata.put(metadataValues[i], metadataValues[(i++)+1]);
+			metadata.put(metadataValues[i*2], metadataValues[i*2+1]);
+			i++;
 		}
 	}
 

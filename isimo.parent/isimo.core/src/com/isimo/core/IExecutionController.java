@@ -29,4 +29,6 @@ public interface IExecutionController {
 	void startTestCase(String testCaseName);
 	
 	void stopTestCase(String testCaseName);	
+	
+	void comment(String comment);
 }

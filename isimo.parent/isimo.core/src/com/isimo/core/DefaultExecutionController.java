@@ -128,4 +128,10 @@ public class DefaultExecutionController implements IExecutionController {
 	public void stopTestCase(String testcaseName) {
 		publishEvent(Event.stopTestCase(testcaseName));
 	}
+
+
+	@Override
+	public void comment(String comment) {
+		publishEvent(Event.comment(comment));
+	}
 }

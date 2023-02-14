@@ -22,7 +22,7 @@ public class Condition extends Action {
 		Element previousParent = testExecutionManager.currentParent;
 		if(evaluate().getLeft()) {
 			testExecutionManager.currentParent = this.log;
-			testExecutionManager.executeList(definition.elements(), this);
+			testExecutionManager.executeList(TestExecutionManager.getSubnodes(definition), this);
 		} else {
 			this.log.elements().clear();
 		}

@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -306,15 +307,19 @@ public class TestExecutionManager implements ApplicationContextAware  {
 		}
 	}
 	
-	void executeList(List<Element> elements, Action container) {
-		for (Element actionElem : elements) {
-			Action currentAction = Action.getAction((LocationAwareElement)actionElem, container);
-			try {
-				currentAction.controlledExecute();
-			} catch (AlreadyLoggedException e) {
-				throw e;
-			} catch (Exception e) {
-				executionController.problemOccurred(currentAction, container, e);	
+	void executeList(List<Node> elements, Action container) {
+		for (Node actionNode : elements) {
+			if(actionNode instanceof Element) {
+				Action currentAction = Action.getAction((LocationAwareElement)actionNode, container);
+				try {
+					currentAction.controlledExecute();
+				} catch (AlreadyLoggedException e) {
+					throw e;
+				} catch (Exception e) {
+					executionController.problemOccurred(currentAction, container, e);	
+				}
+			} else if(actionNode instanceof org.dom4j.Comment){
+				executionController.comment(actionNode.getText());
 			}
 		}
 	}
@@ -489,9 +494,13 @@ public class TestExecutionManager implements ApplicationContextAware  {
 		}
 		if(tagsElem.elements().size() != 0)
 			FileUtils.write(new File(getReportDir()+File.separator+"tags_include.xml"), tagsElem.asXML(), "UTF-8");
-		List<Element> actions = doc.getRootElement().element("actions").elements();
+		List<Node> actions = getSubnodes(doc.getRootElement().element("actions")); 
 		executeList(actions, parent);
 		executionController.stopScenario(scenarioName);		
+	}
+	
+	public static List<Node> getSubnodes(Element root) {
+		return root.content().stream().filter(x -> (x.getNodeType() == Node.COMMENT_NODE || x.getNodeType() == Node.ELEMENT_NODE)).collect(Collectors.toList());
 	}
 
 	public IExecutionController getExecutionController() {
