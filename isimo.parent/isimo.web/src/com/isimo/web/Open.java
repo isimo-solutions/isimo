@@ -144,9 +144,9 @@ public class Open extends WebAction {
 				System.setProperty("webdriver.edge.driver", isimoWebProperties.webdriver.edge.driver);
 				
 				EdgeOptions options = new EdgeOptions();
-				//if(isimoWebProperties.webdriver.edge.headless)
+				if(isimoWebProperties.webdriver.edge.headless)
 					options.addArguments("--headless=new");
-					EdgeDriver edgedriver = new EdgeDriver(options);
+				EdgeDriver edgedriver = new EdgeDriver(options);
 				driver = edgedriver;
 			} else {
 				throw new RuntimeException("Browser not supported: "+getProperties().get("browser.type"));
